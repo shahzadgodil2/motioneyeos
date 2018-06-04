@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LDR_READER_VERSION=37f893fede85ee99f8e6d6a75d2d9d0f063b6790
+LDR_READER_VERSION=c3848a5c73a88f378fde267a64ec2401dd80f1b0
 LDR_READER_SITE = https://github.com/jasaw/ldr-reader.git
 LDR_READER_SITE_METHOD = git
 LDR_READER_INSTALL_TARGET:=YES
