@@ -26,9 +26,17 @@ Note that this fork is __*not*__ compatible with ccrisan's MotionEyeOS because o
 ### Pi Zero W
 
 * Resolution: 1280 x 720 or 1024 x 768
-* fps: 20
+* fps: 10
 * Movie format: H.264
-* Movie quality: 75%
+* Movie quality: 25%
+* Frame Change Threshold: 5.5%
+* Auto Noise Detection: On
+* Light Switch Detection: 75%
+* Despeckle Filter: On
+* Motion Gap: 60 seconds
+* Captured Before: 30 frames
+* Captured After: 100 frames
+* Minimum Motion Frames: 10 frames
 * Add `tvservice -o` to /data/etc/userinit.sh to disable HDMI (saves 30mA, lower CPU temperature).
 * Run `EDITOR=vi crontab -e`, and add `* * * * * /usr/bin/overlay_temper` to overlay CPU temperature every minute.
 * Underclock the hardware to reduce CPU temperature. Edit `/boot/config.txt`
