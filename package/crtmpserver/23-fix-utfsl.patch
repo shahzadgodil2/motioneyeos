@@ -1,0 +1,23 @@
+diff -rupEbBN crtmpserver-tmp/sources/thelib/src/streaming/streamcapabilities.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamcapabilities.cpp
+--- crtmpserver-tmp/sources/thelib/src/streaming/streamcapabilities.cpp	2018-12-03 12:21:47.337384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamcapabilities.cpp	2018-12-03 12:26:07.873273404 +1100
+@@ -28,8 +28,8 @@
+ 
+ #define CHECK_BA_LIMITS(name,length) \
+ if(ba.AvailableBits()<length) { \
+-	FATAL("Unable to read `"name"` value. Not enough bits. Wanted: %u; Have: %u", \
+-		(uint32_t)length, ba.AvailableBits()); \
++	FATAL("Unable to read \"%s\" value. Not enough bits. Wanted: %u; Have: %u", \
++		name, (uint32_t)length, ba.AvailableBits()); \
+ 	return false; \
+ }
+ 
+@@ -43,7 +43,7 @@ if(ba.AvailableBits()<length) { \
+ { \
+ 	uint64_t ___value___=0; \
+ 	if(!ba.ReadExpGolomb(___value___)) { \
+-		FATAL("Unable to read `"name"` value"); \
++		FATAL("Unable to read \"%s\" value", name); \
+ 		return false; \
+ 	} \
+ 	v[name]=(type)___value___; \

@@ -1,0 +1,12 @@
+diff -rupEbwBN crtmpserver-org/builders/cmake/CMakeLists.txt crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/builders/cmake/CMakeLists.txt
+--- crtmpserver-org/builders/cmake/CMakeLists.txt	2018-12-02 23:26:53.037384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/builders/cmake/CMakeLists.txt	2018-12-02 23:27:10.007285642 +1100
+@@ -173,7 +173,7 @@ ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Darwin
+ 		ADD_DEFINITIONS(-DNET_KQUEUE)
+ 		SET(SOCKREACTOR NET_KQUEUE)
+ 	ENDIF(DEFINED SOCKREACTOR)
+-ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
++ELSEIF(CMAKE_SYSTEM_NAME MATCHES "Linux" OR CMAKE_SYSTEM_NAME MATCHES "Buildroot")
+ 	SET(GENERIC_FLAGS "${GENERIC_FLAGS} -fPIC -fdata-sections -ffunction-sections")
+ 	ADD_DEFINITIONS(-DLINUX)
+ 	IF(DEFINED SOCKREACTOR)

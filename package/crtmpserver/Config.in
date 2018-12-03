@@ -1,0 +1,8 @@
+config BR2_PACKAGE_CRTMPSERVER
+	bool "crtmpserver"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBOPENSSL
+	select BR2_PACKAGE_LUA
+	select BR2_PACKAGE_TINYXML
+	help
+	  A high performance streaming platform written on C++.

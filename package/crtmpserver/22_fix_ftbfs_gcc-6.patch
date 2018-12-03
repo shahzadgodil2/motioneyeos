@@ -1,0 +1,3553 @@
+diff -rupEbBN crtmpserver-org/sources/applications/applestreamingclient/src/playlist.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/applications/applestreamingclient/src/playlist.cpp
+--- crtmpserver-org/sources/applications/applestreamingclient/src/playlist.cpp	2018-12-02 23:43:27.585384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/applications/applestreamingclient/src/playlist.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -223,7 +223,7 @@ uint32_t Playlist::GetIndex(uint32_t &se
+ 	//2. We don't have it, and is a 0 value, that means it was never initialized
+ 	if (sequence == 0) {
+ 		FINEST("sequence is 0");
+-		FINEST("_itemMediaSequences.size(): %"PRIz"u", _itemMediaSequences.size());
++		FINEST("_itemMediaSequences.size(): %" PRIz "u", _itemMediaSequences.size());
+ 		if (_itemMediaSequences.size() != 0) {
+ 			//3. We have stuff. Init and return
+ 			FINEST("Return the first entry");
+diff -rupEbBN crtmpserver-org/sources/applications/applestreamingclient/src/protocols/key/inboundkeyprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/applications/applestreamingclient/src/protocols/key/inboundkeyprotocol.cpp
+--- crtmpserver-org/sources/applications/applestreamingclient/src/protocols/key/inboundkeyprotocol.cpp	2018-12-02 23:43:27.585384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/applications/applestreamingclient/src/protocols/key/inboundkeyprotocol.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -74,7 +74,7 @@ bool InboundKeyProtocol::SignalInputData
+ 	//6. Unbase64 the encrypted key
+ 	string encryptedKey = unb64(temp);
+ 	if (encryptedKey.size() != 16) {
+-		FATAL("Invalid key length: %"PRIz"u", encryptedKey.size());
++		FATAL("Invalid key length: %" PRIz "u", encryptedKey.size());
+ 		return false;
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/android/androidplatform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/android/androidplatform.cpp
+--- crtmpserver-org/sources/common/src/platform/android/androidplatform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/android/androidplatform.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -269,7 +269,7 @@ bool setFdTTL(SOCKET fd, uint8_t ttl) {
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -278,7 +278,7 @@ bool setFdMulticastTTL(SOCKET fd, uint8_
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_MULTICAST_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_MULTICAST_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -287,7 +287,7 @@ bool setFdTOS(SOCKET fd, uint8_t tos) {
+ 	int temp = tos;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TOS, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TOS: %"PRIu8"; error was (%d) %s", tos, err, strerror(err));
++		WARN("Unable to set IP_TOS: %" PRIu8 "; error was (%d) %s", tos, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -318,7 +318,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (setsockopt(__maxSndBufSocket, SOL_SOCKET, option, (const char*) & testing,
+ 				sizeof (testing)) == 0) {
+ 			known = testing;
+@@ -332,7 +332,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = -1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/freebsd/freebsdplatform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/freebsd/freebsdplatform.cpp
+--- crtmpserver-org/sources/common/src/platform/freebsd/freebsdplatform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/freebsd/freebsdplatform.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -268,7 +268,7 @@ bool setFdTTL(SOCKET fd, uint8_t ttl) {
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -277,7 +277,7 @@ bool setFdMulticastTTL(SOCKET fd, uint8_
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_MULTICAST_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_MULTICAST_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -286,7 +286,7 @@ bool setFdTOS(SOCKET fd, uint8_t tos) {
+ 	int temp = tos;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TOS, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TOS: %"PRIu8"; error was (%d) %s", tos, err, strerror(err));
++		WARN("Unable to set IP_TOS: %" PRIu8 "; error was (%d) %s", tos, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -317,7 +317,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (setsockopt(__maxSndBufSocket, SOL_SOCKET, option, (const char*) & testing,
+ 				sizeof (testing)) == 0) {
+ 			known = testing;
+@@ -331,7 +331,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = -1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/linux/linuxplatform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/linux/linuxplatform.cpp
+--- crtmpserver-org/sources/common/src/platform/linux/linuxplatform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/linux/linuxplatform.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -268,7 +268,7 @@ bool setFdTTL(SOCKET fd, uint8_t ttl) {
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -277,7 +277,7 @@ bool setFdMulticastTTL(SOCKET fd, uint8_
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_MULTICAST_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_MULTICAST_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -286,7 +286,7 @@ bool setFdTOS(SOCKET fd, uint8_t tos) {
+ 	int temp = tos;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TOS, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TOS: %"PRIu8"; error was (%d) %s", tos, err, strerror(err));
++		WARN("Unable to set IP_TOS: %" PRIu8 "; error was (%d) %s", tos, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -317,7 +317,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (setsockopt(__maxSndBufSocket, SOL_SOCKET, option, (const char*) & testing,
+ 				sizeof (testing)) == 0) {
+ 			known = testing;
+@@ -331,7 +331,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = -1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/osx/osxplatform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/osx/osxplatform.cpp
+--- crtmpserver-org/sources/common/src/platform/osx/osxplatform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/osx/osxplatform.cpp	2018-12-03 00:36:44.049384113 +1100
+@@ -271,7 +271,7 @@ bool setFdTTL(SOCKET fd, uint8_t ttl) {
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -280,7 +280,7 @@ bool setFdMulticastTTL(SOCKET fd, uint8_
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_MULTICAST_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_MULTICAST_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -289,7 +289,7 @@ bool setFdTOS(SOCKET fd, uint8_t tos) {
+ 	int temp = tos;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TOS, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TOS: %"PRIu8"; error was (%d) %s", tos, err, strerror(err));
++		WARN("Unable to set IP_TOS: %" PRIu8 "; error was (%d) %s", tos, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -320,7 +320,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (setsockopt(__maxSndBufSocket, SOL_SOCKET, option, (const char*) & testing,
+ 				sizeof (testing)) == 0) {
+ 			known = testing;
+@@ -334,7 +334,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = -1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/solaris/solarisplatform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/solaris/solarisplatform.cpp
+--- crtmpserver-org/sources/common/src/platform/solaris/solarisplatform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/solaris/solarisplatform.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -271,7 +271,7 @@ bool setFdTTL(SOCKET fd, uint8_t ttl) {
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -280,7 +280,7 @@ bool setFdMulticastTTL(SOCKET fd, uint8_
+ 	int temp = ttl;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_TTL, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_MULTICAST_TTL: %"PRIu8"; error was (%d) %s", ttl, err, strerror(err));
++		WARN("Unable to set IP_MULTICAST_TTL: %" PRIu8 "; error was (%d) %s", ttl, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -289,7 +289,7 @@ bool setFdTOS(SOCKET fd, uint8_t tos) {
+ 	int temp = tos;
+ 	if (setsockopt(fd, IPPROTO_IP, IP_TOS, &temp, sizeof (temp)) != 0) {
+ 		int err = errno;
+-		WARN("Unable to set IP_TOS: %"PRIu8"; error was (%d) %s", tos, err, strerror(err));
++		WARN("Unable to set IP_TOS: %" PRIu8 "; error was (%d) %s", tos, err, strerror(err));
+ 	}
+ 	return true;
+ }
+@@ -320,7 +320,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (setsockopt(__maxSndBufSocket, SOL_SOCKET, option, (const char*) & testing,
+ 				sizeof (testing)) == 0) {
+ 			known = testing;
+@@ -334,7 +334,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = -1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/common/src/platform/windows/win32platform.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/windows/win32platform.cpp
+--- crtmpserver-org/sources/common/src/platform/windows/win32platform.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/platform/windows/win32platform.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -337,7 +337,7 @@ bool setFdKeepAlive(SOCKET fd, bool isUd
+ 	int value = 1;
+ 	if (setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (char *) &value, sizeof (int)) != 0) {
+ 		DWORD err = WSAGetLastError();
+-		FATAL("setsockopt failed with error %"PRIu32, err);
++		FATAL("setsockopt failed with error %" PRIu32 , err);
+ 		return false;
+ 	}
+ 	return true;
+@@ -349,7 +349,7 @@ bool setFdNoNagle(SOCKET fd, bool isUdp)
+ 	BOOL value = TRUE;
+ 	if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *) &value, sizeof (BOOL)) == SOCKET_ERROR) {
+ 		DWORD err = WSAGetLastError();
+-		FATAL("Unable to disable Nagle algorithm. Error was: %"PRIu32, err);
++		FATAL("Unable to disable Nagle algorithm. Error was: %" PRIu32 , err);
+ 		return false;
+ 	}
+ 
+@@ -416,7 +416,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 		//		assert(known <= testing);
+ 		//		assert(known <= prevTesting);
+ 		//		assert(testing <= prevTesting);
+-		//		FINEST("%"PRId32" (%"PRId32") %"PRId32, known, testing, prevTesting);
++		//		FINEST("%" PRId32 " (%" PRId32 ") %" PRId32 , known, testing, prevTesting);
+ 		if (testSetsockopt(option, testing)) {
+ 			known = testing;
+ 			testing = known + (prevTesting - known) / 2;
+@@ -429,7 +429,7 @@ bool DetermineMaxRcvSndBuff(int option,
+ 	CLOSE_SOCKET(__maxSndBufSocket);
+ 	__maxSndBufSocket = (SOCKET) - 1;
+ 	maxVal = known;
+-	//	FINEST("%s maxVal: %"PRId32, (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
++	//	FINEST("%s maxVal: %" PRId32 , (option == SO_SNDBUF ? "SO_SNDBUF" : "SO_RCVBUF"), maxVal);
+ 	return maxVal > 0;
+ }
+ 
+@@ -504,7 +504,7 @@ void killProcess(pid_t pid) {
+ 	HANDLE hSnap = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+ 	if (hSnap == INVALID_HANDLE_VALUE) {
+ 		DWORD err = GetLastError();
+-		FATAL("processes enumeration failed: %"PRIu32, err);
++		FATAL("processes enumeration failed: %" PRIu32 , err);
+ 		return;
+ 	}
+ 
+@@ -524,11 +524,11 @@ void killProcess(pid_t pid) {
+ 	//4. Kill the process
+ 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, false, (DWORD) pid);
+ 	if (hProcess == NULL) {
+-		FATAL("Cannot access process id = %"PRId32, pid);
++		FATAL("Cannot access process id = %" PRId32 , pid);
+ 		return;
+ 	}
+ 	if (!TerminateProcess(hProcess, 0)) {
+-		FATAL("Cannot terminate process id = %"PRId32, pid);
++		FATAL("Cannot terminate process id = %" PRId32 , pid);
+ 	}
+ 	CloseHandle(hProcess);
+ }
+@@ -805,7 +805,7 @@ void GetFinishedProcesses(vector<pid_t>
+ 
+ 		if (resp == WAIT_FAILED) {
+ 			//ASSERT("Failed to get finished processes");
+-			WARN("Failed to get process status. Err: %"PRIu32, GetLastError());
++			WARN("Failed to get process status. Err: %" PRIu32 , GetLastError());
+ 			break;
+ 		} else {
+ 
+@@ -915,7 +915,7 @@ bool LaunchProcess(string fullBinaryPath
+ 		}
+ 	}
+ 
+-	//FINEST("blockSize: %"PRIu32, blockSize);
++	//FINEST("blockSize: %" PRIu32 , blockSize);
+ 
+ 	// Create the process
+ 	STARTUPINFO si = {0};
+@@ -927,7 +927,7 @@ bool LaunchProcess(string fullBinaryPath
+ 	//FINEST("pTemp: `%s`",pTemp);
+ 	if (!CreateProcess(NULL, pTemp, NULL, NULL, false, 0, envBlock, NULL, &si, &pi)) {
+ 		DWORD error = GetLastError();
+-		FATAL("Unable to launch proces. Error: %"PRIu32, error);
++		FATAL("Unable to launch proces. Error: %" PRIu32 , error);
+ 		delete[] pTemp;
+ 		if (envBlock != NULL)
+ 			delete envBlock;
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/buffering/iobuffer.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/buffering/iobuffer.cpp
+--- crtmpserver-org/sources/common/src/utils/buffering/iobuffer.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/buffering/iobuffer.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -59,8 +59,8 @@ void CaptureBacktrace(){
+ 			found->second.first++;
+ 			if((found->second.first%1000)==0){
+ 				fprintf(stderr,"--------------------------\n");
+-				fprintf(stderr,"%"PRIu32"\n",found->second.first);
+-				fprintf(stderr,"%"PRIu32"\n%s\n",found->first,STR(found->second.second));
++				fprintf(stderr,"%" PRIu32 "\n",found->second.first);
++				fprintf(stderr,"%" PRIu32 "\n%s\n",found->first,STR(found->second.second));
+ 			}
+ 	} else {
+ 		string stack="";
+@@ -75,7 +75,7 @@ void CaptureBacktrace(){
+ 			if ((SymFromAddr( ::GetCurrentProcess(), (DWORD64)gpTrace[ i ], &displacement1, info ))
+ 				&&(SymGetLineFromAddr64( ::GetCurrentProcess(), (DWORD64)gpTrace[ i ], &displacement2,&fileLine))){
+ 					stack+=string(info->Name,info->NameLen);
+-					stack+=format(" %s:%"PRIu32"\n",fileLine.FileName,fileLine.LineNumber);
++					stack+=format(" %s:%" PRIu32 "\n",fileLine.FileName,fileLine.LineNumber);
+ 			}
+ 		}
+ 		if(stack.find("le_ba.cpp")==string::npos){
+@@ -102,7 +102,7 @@ uint64_t gSmartCopy = 0;
+ uint64_t gNormalCopy = 0;
+ #define DUMP_ALLOCATIONS_TRACKING(kind, pointer) \
+ do { \
+-	fprintf(stderr,"%p %s A/D Amounts (MB): %.2f/%.2f (%.2f); %"PRIu64"/%"PRIu64" (%"PRIu64"); %"PRIu64"/%"PRIu64" (%"PRIu64") A/D/M %"PRIu64"/%"PRIu64"/%"PRIu64" %.2f(%"PRIu64") %"PRIu64"/%"PRIu64"\n", \
++	fprintf(stderr,"%p %s A/D Amounts (MB): %.2f/%.2f (%.2f); %" PRIu64 "/%" PRIu64 " (%" PRIu64 "); %" PRIu64 "/%" PRIu64 " (%" PRIu64 ") A/D/M %" PRIu64 "/%" PRIu64 "/%" PRIu64 " %.2f(%" PRIu64 ") %" PRIu64 "/%" PRIu64 "\n", \
+ 		pointer, \
+ 		kind, \
+ 		(double)gAllocated/(1024.0*1024.0), \
+@@ -476,7 +476,7 @@ bool IOBuffer::WriteToTCPFd(int32_t fd,
+ 	if (sentAmount < 0) {
+ 		err = LASTSOCKETERROR;
+ 		if ((err != SOCKERROR_EAGAIN)&&(err != SOCKERROR_EINPROGRESS)) {
+-			FATAL("Unable to send %"PRIu32" bytes of data data. Size advertised by network layer was %"PRIu32". Permanent error (%d): %s",
++			FATAL("Unable to send %" PRIu32 " bytes of data data. Size advertised by network layer was %" PRIu32 ". Permanent error (%d): %s",
+ 					_published - _consumed, size, err, strerror(err));
+ 			result = false;
+ 		}
+@@ -501,7 +501,7 @@ bool IOBuffer::WriteToStdio(int32_t fd,
+ 	int err = errno;
+ 
+ 	if (sentAmount < 0) {
+-		FATAL("Unable to send %"PRIu32" bytes of data data. Size advertised by network layer was %"PRIu32". Permanent error: (%d) %s",
++		FATAL("Unable to send %" PRIu32 " bytes of data data. Size advertised by network layer was %" PRIu32 ". Permanent error: (%d) %s",
+ 				_published - _consumed, size, err, strerror(err));
+ 		result = false;
+ 	} else {
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/logging/consoleloglocation.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/consoleloglocation.cpp
+--- crtmpserver-org/sources/common/src/utils/logging/consoleloglocation.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/consoleloglocation.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -69,12 +69,12 @@ void ConsoleLogLocation::Log(int32_t lev
+ #else
+ 	if (_allowColors) {
+ 		SET_CONSOLE_TEXT_COLOR(_colors[level]);
+-		fprintf(stdout, "%s:%"PRIu32" %s", pFileName, lineNumber, STR(message));
+-		//fprintf(stdout, "%d %s:%"PRIu32" %s", (int) getpid(), pFileName, lineNumber, STR(message));
++		fprintf(stdout, "%s:%" PRIu32 " %s", pFileName, lineNumber, STR(message));
++		//fprintf(stdout, "%d %s:%" PRIu32 " %s", (int) getpid(), pFileName, lineNumber, STR(message));
+ 		SET_CONSOLE_TEXT_COLOR(_colors[6]);
+ 		fprintf(stdout, "\n");
+ 	} else {
+-		fprintf(stdout, "%s:%"PRIu32" %s\n", pFileName, lineNumber, STR(message));
++		fprintf(stdout, "%s:%" PRIu32 " %s\n", pFileName, lineNumber, STR(message));
+ 	}
+ #endif /* ANDROID */
+ 	fflush(stdout);
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/logging/fileloglocation.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/fileloglocation.cpp
+--- crtmpserver-org/sources/common/src/utils/logging/fileloglocation.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/fileloglocation.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -74,7 +74,7 @@ void FileLogLocation::Log(int32_t level,
+ 		if (_fileIsClosed)
+ 			return;
+ 	}
+-	string logEntry = format("%"PRIu64":%d:%s:%u:%s:%s",
++	string logEntry = format("%" PRIu64 ":%d:%s:%u:%s:%s",
+ 			(uint64_t) time(NULL), level, pFileName, lineNumber, pFunctionName,
+ 			STR(message));
+ 	if (_singleLine) {
+@@ -101,12 +101,12 @@ bool FileLogLocation::OpenFile() {
+ 	double ts;
+ 	GETCLOCKS(ts, double);
+ 	ts = (ts / CLOCKS_PER_SECOND) * 1000;
+-	string filename = format("%s.%"PRIu64".%"PRIu64".log", STR(_fileName), (uint64_t) GetPid(), (uint64_t) ts);
++	string filename = format("%s.%" PRIu64 ".%" PRIu64 ".log", STR(_fileName), (uint64_t) GetPid(), (uint64_t) ts);
+ 	_fileStream = new File();
+ 	if (!_fileStream->Initialize(filename, FILE_OPEN_MODE_TRUNCATE)) {
+ 		return false;
+ 	}
+-	string header = format("PID: %"PRIu64"; TIMESTAMP: %"PRIz"u%s%s%s",
++	string header = format("PID: %" PRIu64 "; TIMESTAMP: %" PRIz "u%s%s%s",
+ 			(uint64_t) GetPid(),
+ 			time(NULL),
+ 			STR(_newLineCharacters),
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/logging/syslogloglocation.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/syslogloglocation.cpp
+--- crtmpserver-org/sources/common/src/utils/logging/syslogloglocation.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/logging/syslogloglocation.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -84,7 +84,7 @@ void SyslogLogLocation::Log(int32_t leve
+ 	int priority = (MAP_HAS1(_priorities, level) ? _priorities[level] : LOG_DEBUG) | LOG_USER;
+ 
+ 	if (_appendSourceFileLine) {
+-		syslog(priority, "%s %s:%"PRIu32":%s %s",
++		syslog(priority, "%s %s:%" PRIu32 ":%s %s",
+ 				STR(le["loggerName"]),
+ 				STR(fileName),
+ 				lineNumber,
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/crypto.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/crypto.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/crypto.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/crypto.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -332,7 +332,7 @@ string hex(const uint8_t *pBuffer, uint3
+ 		return "";
+ 	string result = "";
+ 	for (uint32_t i = 0; i < length; i++) {
+-		result += format("%02"PRIx8, pBuffer[i]);
++		result += format("%02" PRIx8 , pBuffer[i]);
+ 	}
+ 	return result;
+ }
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/file.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/file.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/file.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/file.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -181,7 +181,7 @@ bool File::SeekAhead(int64_t count) {
+ 	}
+ 
+ 	if (fseek64(_pFile, (PIOFFT) count, SEEK_CUR) != 0) {
+-		FATAL("Unable to seek ahead %"PRId64" bytes", count);
++		FATAL("Unable to seek ahead %" PRId64 " bytes", count);
+ 		return false;
+ 	}
+ 
+@@ -205,7 +205,7 @@ bool File::SeekBehind(int64_t count) {
+ 	}
+ 
+ 	if (fseek64(_pFile, (PIOFFT) (-1 * count), SEEK_CUR) != 0) {
+-		FATAL("Unable to seek behind %"PRId64" bytes", count);
++		FATAL("Unable to seek behind %" PRId64 " bytes", count);
+ 		return false;
+ 	}
+ 
+@@ -224,7 +224,7 @@ bool File::SeekTo(uint64_t position) {
+ 	}
+ 
+ 	if (fseek64(_pFile, (PIOFFT) position, SEEK_SET) != 0) {
+-		FATAL("Unable to seek to position %"PRIu64, position);
++		FATAL("Unable to seek to position %" PRIu64 , position);
+ 		return false;
+ 	}
+ 
+@@ -314,7 +314,7 @@ bool File::ReadBuffer(uint8_t *pBuffer,
+ 	}
+ 	if (fread(pBuffer, (uint32_t) count, 1, _pFile) != 1) {
+ 		int err = errno;
+-		FATAL("Unable to read %"PRIu64" bytes from the file. Cursor: %"PRIu64" (0x%"PRIx64"); (%d) %s",
++		FATAL("Unable to read %" PRIu64 " bytes from the file. Cursor: %" PRIu64 " (0x%" PRIx64 "); (%d) %s",
+ 				count, Cursor(), Cursor(), err, strerror(err));
+ 		return false;
+ 	}
+@@ -487,7 +487,7 @@ bool File::WriteBuffer(const uint8_t *pB
+ 		return false;
+ 	}
+ 	if (fwrite(pBuffer, (uint32_t) count, 1, _pFile) != 1) {
+-		FATAL("Unable to write %"PRIu64" bytes to file", count);
++		FATAL("Unable to write %" PRIu64 " bytes to file", count);
+ 		return false;
+ 	}
+ 	_size += count;
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/mmapfile.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/mmapfile.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/mmapfile.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/mmapfile.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -48,7 +48,7 @@ bool MmapPointer::Allocate(int fd, uint6
+ 	Free();
+ 
+ 	if (size > windowSize) {
+-		FATAL("size is greater than window size: %"PRIu64" > %u", size, windowSize);
++		FATAL("size is greater than window size: %" PRIu64 " > %u", size, windowSize);
+ 		return false;
+ 	}
+ 
+@@ -59,12 +59,12 @@ bool MmapPointer::Allocate(int fd, uint6
+ 	//2. Compute the new size
+ 	_size = windowSize;
+ 	while (_cursor + _size < cursor + size) {
+-		LOG_MMAP("We need to go a little bit further; Wanted: %"PRIu64"; got: %"PRIu64,
++		LOG_MMAP("We need to go a little bit further; Wanted: %" PRIu64 "; got: %" PRIu64 ,
+ 				cursor + size, _cursor + _size);
+ 		_size += MmapFile::_pageSize;
+ 	}
+ 
+-	LOG_MMAP("Reading %"PRIu64" bytes from disk", _size);
++	LOG_MMAP("Reading %" PRIu64 " bytes from disk", _size);
+ 	_pData = (uint8_t *) mmap(NULL,
+ 			_size,
+ 			PROT_READ,
+@@ -127,7 +127,7 @@ bool MmapPointer::HasRange(uint64_t curs
+ MmapPointer::operator string() {
+ 	if (_size == 0)
+ 		return "[N - N](0)";
+-	return format("[%"PRIu64" - %"PRIu64"](%u)", _cursor, _cursor + _size - 1, _size);
++	return format("[%" PRIu64 " - %" PRIu64 "](%u)", _cursor, _cursor + _size - 1, _size);
+ }
+ 
+ MmapFile::MmapFile() {
+@@ -263,7 +263,7 @@ bool MmapFile::SeekTo(uint64_t position)
+ 		return false;
+ 	}
+ 	if (position > _size) {
+-		FATAL("Invalid position: %"PRIu64". Must be at most: %"PRIu64, position, _size - 1);
++		FATAL("Invalid position: %" PRIu64 ". Must be at most: %" PRIu64 , position, _size - 1);
+ 		_failed = true;
+ 		return false;
+ 	}
+@@ -410,22 +410,22 @@ bool MmapFile::PeekUI64(uint64_t *pValue
+ bool MmapFile::PeekBuffer(uint8_t *pDestBuffer, uint64_t count) {
+ 	//1. Sanity checks
+ 	if (_failed) {
+-		DEBUG("_cursor: %"PRIu64"; count: %"PRIu64"; %s", _cursor, count, STR(_path));
++		DEBUG("_cursor: %" PRIu64 "; count: %" PRIu64 "; %s", _cursor, count, STR(_path));
+ 		FATAL("This mmap file is in inconsistent state");
+ 		return false;
+ 	}
+ 
+ 	if (_windowSize < count) {
+-		DEBUG("_cursor: %"PRIu64"; count: %"PRIu64"; %s", _cursor, count, STR(_path));
+-		FATAL("Invalid window size: _windowSize < count %u < %"PRIu64,
++		DEBUG("_cursor: %" PRIu64 "; count: %" PRIu64 "; %s", _cursor, count, STR(_path));
++		FATAL("Invalid window size: _windowSize < count %u < %" PRIu64 ,
+ 				_windowSize, count);
+ 		_failed = true;
+ 		return false;
+ 	}
+ 
+ 	if (_cursor + count > _size) {
+-		DEBUG("_cursor: %"PRIu64"; count: %"PRIu64"; %s", _cursor, count, STR(_path));
+-		FATAL("EOF will be reached: cursor: %"PRIu64"; count: %"PRIu64"; size: %"PRIu64,
++		DEBUG("_cursor: %" PRIu64 "; count: %" PRIu64 "; %s", _cursor, count, STR(_path));
++		FATAL("EOF will be reached: cursor: %" PRIu64 "; count: %" PRIu64 "; size: %" PRIu64 ,
+ 				_cursor, count, _size);
+ 		_failed = true;
+ 		return false;
+@@ -454,7 +454,7 @@ bool MmapFile::PeekBuffer(uint8_t *pDest
+ 
+ 	//3. Do the read
+ 	if (pPointer->Copy(pDestBuffer, _cursor, 0, count) != count) {
+-		FATAL("Unable to copy %"PRIu64" bytes", count);
++		FATAL("Unable to copy %" PRIu64 " bytes", count);
+ 		_failed = true;
+ 		return false;
+ 	}
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/timersmanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/timersmanager.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/timersmanager.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/timersmanager.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -22,7 +22,7 @@
+ #include "utils/logging/logging.h"
+ 
+ TimerEvent::operator string() {
+-	return format("id: %4"PRIu32"; period: %6"PRIu32"; nextRun: %"PRIu64,
++	return format("id: %4" PRIu32 "; period: %6" PRIu32 "; nextRun: %" PRIu64 ,
+ 			id, period, triggerTime);
+ }
+ 
+@@ -134,13 +134,13 @@ string TimersManager::DumpTimers() {
+ 	string result = "";
+ 	map<uint64_t, map<uint32_t, TimerEvent *> >::iterator i;
+ 	for (i = _timers.begin(); i != _timers.end(); i++) {
+-		result += format("%"PRIu64"\n", MAP_KEY(i));
++		result += format("%" PRIu64 "\n", MAP_KEY(i));
+ 
+ 		FOR_MAP(MAP_VAL(i), uint32_t, TimerEvent *, j) {
+ 			if (MAP_VAL(j) != NULL)
+ 				result += "\t" + MAP_VAL(j)->operator string() + "\n";
+ 			else
+-				result += format("\tid: %4"PRIu32"; NULL\n", MAP_KEY(j));
++				result += format("\tid: %4" PRIu32 "; NULL\n", MAP_KEY(j));
+ 		}
+ 		if (MAP_VAL(i).size() == 0)
+ 			result += "\n";
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/uri.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/uri.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/uri.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/uri.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -100,7 +100,7 @@ bool parseURI(string stringUri, URI &uri
+ 	//		FATAL("Scheme `%s` not supported", STR(scheme));
+ 	//		return false;
+ 	//	}
+-	LOG_URI("scheme: %s; default port: %"PRIu16, STR(scheme), port);
++	LOG_URI("scheme: %s; default port: %" PRIu16 , STR(scheme), port);
+ 
+ 	//3. get the authentication portion. the search starts from
+ 	//where the scheme detection left and up to the first / character
+@@ -161,12 +161,12 @@ bool parseURI(string stringUri, URI &uri
+ 		portString = hostPort.substr(pos + 1);
+ 		portSpecified = true;
+ 		port = (uint16_t) atoi(STR(portString));
+-		if (format("%"PRIu16, port) != portString) {
++		if (format("%" PRIu16 , port) != portString) {
+ 			FATAL("Invalid port number specified: `%s`", STR(portString));
+ 			return false;
+ 		}
+ 	}
+-	LOG_URI("host: %s; port: %"PRIu16"; portSpecified: %d", STR(host), port, portSpecified);
++	LOG_URI("host: %s; port: %" PRIu16 "; portSpecified: %d", STR(host), port, portSpecified);
+ 
+ 	//5. fullDocumentPathWithParameters
+ 	fullDocumentPath = "/";
+@@ -295,7 +295,7 @@ string URI::baseURI() {
+ 	}
+ 	result += host();
+ 	if (portSpecified())
+-		result += format(":%"PRIu16, port());
++		result += format(":%" PRIu16 , port());
+ 	result += documentPath();
+ 	return result;
+ }
+diff -rupEbBN crtmpserver-org/sources/common/src/utils/misc/variant.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/variant.cpp
+--- crtmpserver-org/sources/common/src/utils/misc/variant.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/common/src/utils/misc/variant.cpp	2018-12-03 00:36:44.053384113 +1100
+@@ -282,7 +282,7 @@ string Variant::ToString(string name, ui
+ 		}
+ 		case V_INT64:
+ 		{
+-			result += format("%s<INT64 name=\"%s\">%"PRId64"</INT64>",
++			result += format("%s<INT64 name=\"%s\">%" PRId64 "</INT64>",
+ 					STR(strIndent), STR(name), _value.i64);
+ 			break;
+ 		}
+@@ -306,7 +306,7 @@ string Variant::ToString(string name, ui
+ 		}
+ 		case V_UINT64:
+ 		{
+-			result += format("%s<UINT64 name=\"%s\">%"PRIu64"</UINT64>",
++			result += format("%s<UINT64 name=\"%s\">%" PRIu64 "</UINT64>",
+ 					STR(strIndent), STR(name), _value.ui64);
+ 			break;
+ 		}
+@@ -342,7 +342,7 @@ string Variant::ToString(string name, ui
+ 		}
+ 		case V_BYTEARRAY:
+ 		{
+-			result += format("%s<BYTEARRAY name=\"%s\">%"PRIz"u bytes</BYTEARRAY>",
++			result += format("%s<BYTEARRAY name=\"%s\">%" PRIz "u bytes</BYTEARRAY>",
+ 					STR(strIndent), STR(name), _value.s->length());
+ 			break;
+ 		}
+@@ -629,7 +629,7 @@ Variant::operator string() {
+ 		}
+ 		case V_INT64:
+ 		{
+-			return format("%"PRId64, this->operator int64_t());
++			return format("%" PRId64 , this->operator int64_t());
+ 		}
+ 		case V_UINT8:
+ 		case V_UINT16:
+@@ -639,7 +639,7 @@ Variant::operator string() {
+ 		}
+ 		case V_UINT64:
+ 		{
+-			return format("%"PRIu64, this->operator uint64_t());
++			return format("%" PRIu64 , this->operator uint64_t());
+ 		}
+ 		case V_DOUBLE:
+ 		{
+@@ -703,7 +703,7 @@ Variant& Variant::operator[](const char
+ }
+ 
+ Variant& Variant::operator[](const uint32_t &key) {
+-	sprintf(_pNumericKey, "0x%08"PRIx32, key);
++	sprintf(_pNumericKey, "0x%08" PRIx32 , key);
+ 	return operator[](_pNumericKey);
+ }
+ 
+@@ -715,7 +715,7 @@ Variant& Variant::operator[](Variant &ke
+ 		case V_UINT16:
+ 		case V_UINT32:
+ 		{
+-			sprintf(_pNumericKey, "0x%08"PRIx32, (uint32_t) key);
++			sprintf(_pNumericKey, "0x%08" PRIx32 , (uint32_t) key);
+ 			return operator[](_pNumericKey);
+ 		}
+ 		case V_STRING:
+@@ -923,7 +923,7 @@ bool Variant::HasKey(const string &key,
+ }
+ 
+ bool Variant::HasIndex(const uint32_t index) {
+-	sprintf(_pNumericKey, "0x%08"PRIx32, index);
++	sprintf(_pNumericKey, "0x%08" PRIx32 , index);
+ 	return HasKey(_pNumericKey);
+ }
+ 
+@@ -982,7 +982,7 @@ void Variant::RemoveAt(const uint32_t in
+ 		ASSERT("RemoveKey failed: %s", STR(ToString()));
+ 		return;
+ 	}
+-	sprintf(_pNumericKey, "0x%08"PRIx32, index);
++	sprintf(_pNumericKey, "0x%08" PRIx32 , index);
+ 	_value.m->children.erase(_pNumericKey);
+ }
+ 
+@@ -1016,7 +1016,7 @@ uint32_t Variant::MapDenseSize() {
+ 
+ 	uint32_t denseCount = 0;
+ 	for (denseCount = 0; denseCount < MapSize(); denseCount++) {
+-		sprintf(_pNumericKey, "0x%08"PRIx32, denseCount);
++		sprintf(_pNumericKey, "0x%08" PRIx32 , denseCount);
+ 		if (!MAP_HAS1(_value.m->children, _pNumericKey))
+ 			break;
+ 	}
+@@ -1792,7 +1792,7 @@ bool Variant::SerializeToJSON(string &re
+ 		case V_INT64:
+ 		{
+ 			int64_t value = (int64_t) (*this);
+-			result += format("%"PRId64, value);
++			result += format("%" PRId64 , value);
+ 			break;
+ 		}
+ 		case V_UINT8:
+@@ -1801,7 +1801,7 @@ bool Variant::SerializeToJSON(string &re
+ 		case V_UINT64:
+ 		{
+ 			uint64_t value = (uint64_t) (*this);
+-			result += format("%"PRIu64, value);
++			result += format("%" PRIu64 , value);
+ 			break;
+ 		}
+ 		case V_DOUBLE:
+@@ -1939,7 +1939,7 @@ TiXmlElement *Variant::SerializeToXmlEle
+ 		case V_INT64:
+ 		{
+ 			pResult = new TiXmlElement("INT64");
+-			pResult->LinkEndChild(new TiXmlText(format("%"PRId64, _value.i64)));
++			pResult->LinkEndChild(new TiXmlText(format("%" PRId64 , _value.i64)));
+ 			break;
+ 		}
+ 		case V_UINT8:
+@@ -1963,7 +1963,7 @@ TiXmlElement *Variant::SerializeToXmlEle
+ 		case V_UINT64:
+ 		{
+ 			pResult = new TiXmlElement("UINT64");
+-			pResult->LinkEndChild(new TiXmlText(format("%"PRIu64, _value.ui64)));
++			pResult->LinkEndChild(new TiXmlText(format("%" PRIu64 , _value.ui64)));
+ 			break;
+ 		}
+ 		case V_DOUBLE:
+@@ -2074,7 +2074,7 @@ TiXmlElement *Variant::SerializeToXmlRpc
+ 		case V_INT64:
+ 		{
+ 			pResult = new TiXmlElement("int");
+-			pResult->LinkEndChild(new TiXmlText(format("%"PRId64, _value.i64)));
++			pResult->LinkEndChild(new TiXmlText(format("%" PRId64 , _value.i64)));
+ 			break;
+ 		}
+ 		case V_UINT8:
+@@ -2098,7 +2098,7 @@ TiXmlElement *Variant::SerializeToXmlRpc
+ 		case V_UINT64:
+ 		{
+ 			pResult = new TiXmlElement("int");
+-			pResult->LinkEndChild(new TiXmlText(format("%"PRIu64, _value.ui64)));
++			pResult->LinkEndChild(new TiXmlText(format("%" PRIu64 , _value.ui64)));
+ 			break;
+ 		}
+ 		case V_DOUBLE:
+@@ -2409,56 +2409,56 @@ bool Variant::DeserializeFromXml(TiXmlEl
+ 		variant.Reset(true);
+ 		return true;
+ 	} else if (nodeName == "int8") {
+-		if (sscanf(STR(text), "%"PRId64, &val.i64) != 1) {
++		if (sscanf(STR(text), "%" PRId64 , &val.i64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (int8_t) val.i64;
+ 		return true;
+ 	} else if (nodeName == "int16") {
+-		if (sscanf(STR(text), "%"PRId64, &val.i64) != 1) {
++		if (sscanf(STR(text), "%" PRId64 , &val.i64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (int16_t) val.i64;
+ 		return true;
+ 	} else if (nodeName == "int32") {
+-		if (sscanf(STR(text), "%"PRId64, &val.i64) != 1) {
++		if (sscanf(STR(text), "%" PRId64 , &val.i64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (int32_t) val.i64;
+ 		return true;
+ 	} else if (nodeName == "int64") {
+-		if (sscanf(STR(text), "%"PRId64, &val.i64) != 1) {
++		if (sscanf(STR(text), "%" PRId64 , &val.i64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (int64_t) val.i64;
+ 		return true;
+ 	} else if (nodeName == "uint8") {
+-		if (sscanf(STR(text), "%"PRIu64, &val.ui64) != 1) {
++		if (sscanf(STR(text), "%" PRIu64 , &val.ui64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (uint8_t) val.ui64;
+ 		return true;
+ 	} else if (nodeName == "uint16") {
+-		if (sscanf(STR(text), "%"PRIu64, &val.ui64) != 1) {
++		if (sscanf(STR(text), "%" PRIu64 , &val.ui64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (uint16_t) val.ui64;
+ 		return true;
+ 	} else if (nodeName == "uint32") {
+-		if (sscanf(STR(text), "%"PRIu64, &val.ui64) != 1) {
++		if (sscanf(STR(text), "%" PRIu64 , &val.ui64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+ 		variant = (uint32_t) val.ui64;
+ 		return true;
+ 	} else if (nodeName == "uint64") {
+-		if (sscanf(STR(text), "%"PRIu64, &val.ui64) != 1) {
++		if (sscanf(STR(text), "%" PRIu64 , &val.ui64) != 1) {
+ 			FATAL("Invalid number");
+ 			return false;
+ 		}
+diff -rupEbBN crtmpserver-org/sources/crtmpserver/src/crtmpserver.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/crtmpserver/src/crtmpserver.cpp
+--- crtmpserver-org/sources/crtmpserver/src/crtmpserver.cpp	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/crtmpserver/src/crtmpserver.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -216,7 +216,7 @@ bool Initialize() {
+ 
+ 	INFO("%s", STR(Version::GetBanner()));
+ 
+-	INFO("OS files descriptors count limits: %"PRIu32"/%"PRIu32,
++	INFO("OS files descriptors count limits: %" PRIu32 "/%" PRIu32 ,
+ 			currentFdCount, maxFdCount);
+ 
+ 	INFO("Initialize I/O handlers manager: %s", NETWORK_REACTOR);
+@@ -274,7 +274,7 @@ void Run() {
+ 		exit(-1);
+ 	}
+ 	INFO("\n%s", STR(gRs.pConfigFile->GetServicesInfo()));
+-	INFO("GO! GO! GO! (%"PRIu32")", (uint32_t) GetPid());
++	INFO("GO! GO! GO! (%" PRIu32 ")", (uint32_t) GetPid());
+ 	while (IOHandlerManager::Pulse()) {
+ 		IOHandlerManager::DeleteDeadHandlers();
+ 		ProtocolManager::CleanupDeadProtocols();
+@@ -406,7 +406,7 @@ void WritePidFile(pid_t pid) {
+ 		return;
+ 	}
+ 
+-	string content = format("%"PRIz"d", pid);
++	string content = format("%" PRIz "d", pid);
+ 	if (!f.WriteString(content)) {
+ 		WARN("Unable to write PID to file %s", STR(pidFile));
+ 		return;
+diff -rupEbBN crtmpserver-org/sources/thelib/include/mediaformats/readers/mediaframe.h crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/include/mediaformats/readers/mediaframe.h
+--- crtmpserver-org/sources/thelib/include/mediaformats/readers/mediaframe.h	2018-12-02 23:43:27.593384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/include/mediaformats/readers/mediaframe.h	2018-12-03 00:36:44.057384113 +1100
+@@ -37,7 +37,7 @@ typedef struct _MediaFrame {
+ 	bool isBinaryHeader;
+ 
+ 	operator string() {
+-		return format("s: %16"PRIx64"; l: %6"PRIx64"; t: %"PRIu8"; kf: %"PRIu8"; pts: %8.2f; dts: %8.2f; cts: %6.2f; bh: %"PRIu8,
++		return format("s: %16" PRIx64 "; l: %6" PRIx64 "; t: %" PRIu8 "; kf: %" PRIu8 "; pts: %8.2f; dts: %8.2f; cts: %6.2f; bh: %" PRIu8 ,
+ 				start, length, type, isKeyFrame, pts, dts, cts, isBinaryHeader);
+ 	};
+ } MediaFrame;
+diff -rupEbBN crtmpserver-org/sources/thelib/include/mediaformats/readers/ts/tsstreaminfo.h crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/include/mediaformats/readers/ts/tsstreaminfo.h
+--- crtmpserver-org/sources/thelib/include/mediaformats/readers/ts/tsstreaminfo.h	2018-12-02 23:43:27.597384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/include/mediaformats/readers/ts/tsstreaminfo.h	2018-12-03 00:36:44.057384113 +1100
+@@ -41,7 +41,7 @@ struct TSStreamInfo {
+ 	}
+ 
+ 	string toString(int32_t indent) {
+-		string result = format("%sstreamType: 0x%02"PRIx8"; elementaryPID: %hu; esInfoLength: %hu; descriptors count: %"PRIz"u\n",
++		string result = format("%sstreamType: 0x%02" PRIx8 "; elementaryPID: %hu; esInfoLength: %hu; descriptors count: %" PRIz "u\n",
+ 				STR(string(indent, '\t')),
+ 				streamType, elementaryPID, esInfoLength, esDescriptors.size());
+ 		for (uint32_t i = 0; i < esDescriptors.size(); i++) {
+diff -rupEbBN crtmpserver-org/sources/thelib/src/application/baseclientapplication.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/application/baseclientapplication.cpp
+--- crtmpserver-org/sources/thelib/src/application/baseclientapplication.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/application/baseclientapplication.cpp	2018-12-03 00:38:35.879954347 +1100
+@@ -87,7 +87,7 @@ StreamMetadataResolver *BaseClientApplic
+ 
+ bool BaseClientApplication::Initialize() {
+ 	if (_configuration.HasKeyChain(V_STRING, false, 1, CONF_APPLICATION_MEDIAFOLDER)) {
+-		WARN(CONF_APPLICATION_MEDIAFOLDER" is obsolete. Please use "CONF_APPLICATION_MEDIASTORAGE);
++		WARN(CONF_APPLICATION_MEDIAFOLDER " is obsolete. Please use " CONF_APPLICATION_MEDIASTORAGE);
+ 		if (!_configuration.HasKeyChain(V_MAP, false, 1, CONF_APPLICATION_MEDIASTORAGE)) {
+ 			_configuration[CONF_APPLICATION_MEDIASTORAGE] = Variant();
+ 			_configuration[CONF_APPLICATION_MEDIASTORAGE].IsArray(false);
+@@ -477,7 +477,7 @@ string BaseClientApplication::GetStreamN
+ 	}
+ 
+ 	if (_aliases.size() > 200) {
+-		WARN("Auto flush aliases: %"PRIu32, (uint32_t) _aliases.size());
++		WARN("Auto flush aliases: %" PRIu32 , (uint32_t) _aliases.size());
+ 		_aliases.clear();
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/configuration/configfile.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/configuration/configfile.cpp
+--- crtmpserver-org/sources/thelib/src/configuration/configfile.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/configuration/configfile.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -512,7 +512,7 @@ bool ConfigFile::NormalizeApplicationAcc
+ 	if (node.HasKeyChain(_V_NUMERIC, false, 1, CONF_PORT))
+ 		port = (int32_t) node.GetValue(CONF_PORT, false);
+ 	if (port <= 0 || port >= 65536) {
+-		FATAL("Invalid port: %"PRId32, port);
++		FATAL("Invalid port: %" PRId32 , port);
+ 		return false;
+ 	}
+ 	node[CONF_PORT] = (uint16_t) port;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/basemediadocument.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/basemediadocument.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/basemediadocument.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/basemediadocument.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -77,7 +77,7 @@ bool BaseMediaDocument::Process() {
+ 	if (framesCount == 0)
+ 		framesCount = (uint64_t) _frames.size();
+ 
+-	INFO("%"PRIu64" frames computed in %.2f seconds at a speed of %.2f FPS",
++	INFO("%" PRIu64 " frames computed in %.2f seconds at a speed of %.2f FPS",
+ 			framesCount,
+ 			(endTime - startTime) / (double) CLOCKS_PER_SECOND,
+ 			(double) framesCount / ((endTime - startTime) / (double) CLOCKS_PER_SECOND));
+@@ -86,7 +86,7 @@ bool BaseMediaDocument::Process() {
+ 		uint32_t hours = totalSeconds / 3600;
+ 		uint32_t minutes = (totalSeconds - hours * 3600) / 60;
+ 		uint32_t seconds = (totalSeconds - hours * 3600 - minutes * 60);
+-		INFO("File size: %"PRIu64" bytes; Duration: %u:%u:%u (%u sec); Optimal bandwidth: %.2f kB/s",
++		INFO("File size: %" PRIu64 " bytes; Duration: %u:%u:%u (%u sec); Optimal bandwidth: %.2f kB/s",
+ 				_mediaFile.Size(),
+ 				hours, minutes, seconds,
+ 				totalSeconds,
+@@ -163,7 +163,7 @@ bool BaseMediaDocument::SaveSeekFile() {
+ 	FOR_VECTOR(_frames, i) {
+ 		MediaFrame &frame = _frames[i];
+ 		if (maxFrameSize < frame.length) {
+-			//WARN("maxFrameSize bumped up: %"PRIu64" -> %"PRIu64, maxFrameSize, frame.length);
++			//WARN("maxFrameSize bumped up: %" PRIu64 " -> %" PRIu64 , maxFrameSize, frame.length);
+ 			maxFrameSize = frame.length;
+ 		}
+ 		hasVideo |= (frame.type == MEDIAFRAME_TYPE_VIDEO);
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/flv/flvdocument.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/flv/flvdocument.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/flv/flvdocument.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/flv/flvdocument.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -82,7 +82,7 @@ bool FLVDocument::BuildFrames() {
+ 				frame.type = MEDIAFRAME_TYPE_DATA;
+ 				break;
+ 			default:
+-				WARN("Invalid tag type: %hhu at cursor %"PRIu64, tagType, _mediaFile.Cursor());
++				WARN("Invalid tag type: %hhu at cursor %" PRIu64 , tagType, _mediaFile.Cursor());
+ 				mustBreak = true;
+ 				break;
+ 		}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp3/mp3document.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp3/mp3document.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp3/mp3document.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp3/mp3document.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -199,7 +199,7 @@ bool MP3Document::BuildFrames() {
+ 
+ 			//7. Seek to the next frame
+ 			if (!_mediaFile.SeekTo(frame.start + frame.length)) {
+-				WARN("Unable to seek to %"PRIx64, frame.start + frame.length);
++				WARN("Unable to seek to %" PRIx64 , frame.start + frame.length);
+ 				break;
+ 			}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomabst.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomabst.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomabst.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomabst.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -67,37 +67,37 @@ bool AtomABST::ReadData() {
+ 		FATAL("Unable to read _bootstrapInfoVersion");
+ 		return false;
+ 	}
+-		//FINEST("_bootstrapInfoVersion: %"PRIu32, _bootstrapInfoVersion);
++		//FINEST("_bootstrapInfoVersion: %" PRIu32 , _bootstrapInfoVersion);
+ 
+ 	uint8_t ui8;
+ 	if (!ReadUInt8(ui8)) {
+ 		FATAL("Unable to read flags");
+ 		return false;
+ 	}
+-	//FINEST("flags: %"PRIu8, ui8);
++	//FINEST("flags: %" PRIu8 , ui8);
+ 
+ 	_profile = (ui8 >> 6)&0x03;
+ 	_live = (ui8 >> 5)&0x01;
+ 	_update = (ui8 >> 4)&0x01;
+-		//FINEST("_profile: %"PRIu8"; _live: %d; _update: %d", _profile, _live, _update);
++		//FINEST("_profile: %" PRIu8 "; _live: %d; _update: %d", _profile, _live, _update);
+ 
+ 	if (!ReadUInt32(_timeScale)) {
+ 		FATAL("Unable to read _timeScale");
+ 		return false;
+ 	}
+-		//FINEST("_timeScale: %"PRIu32, _timeScale);
++		//FINEST("_timeScale: %" PRIu32 , _timeScale);
+ 
+ 	if (!ReadUInt64(_currentMediaTime)) {
+ 		FATAL("Unable to read _currentMediaTime");
+ 		return false;
+ 	}
+-		//FINEST("_currentMediaTime: %"PRIu64, _currentMediaTime);
++		//FINEST("_currentMediaTime: %" PRIu64 , _currentMediaTime);
+ 
+ 	if (!ReadUInt64(_smpteTimeCodeOffset)) {
+ 		FATAL("Unable to read _smpteTimeCodeOffset");
+ 		return false;
+ 	}
+-		//FINEST("_smpteTimeCodeOffset: %"PRIu64, _smpteTimeCodeOffset);
++		//FINEST("_smpteTimeCodeOffset: %" PRIu64 , _smpteTimeCodeOffset);
+ 
+ 	if (!ReadNullTerminatedString(_movieIdentifier)) {
+ 		FATAL("Unable to read _movieIdentifier");
+@@ -109,7 +109,7 @@ bool AtomABST::ReadData() {
+ 		FATAL("Unable to read _serverEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_serverEntryCount: %"PRIu8, _serverEntryCount);
++		//FINEST("_serverEntryCount: %" PRIu8 , _serverEntryCount);
+ 
+ 	for (uint8_t i = 0; i < _serverEntryCount; i++) {
+ 		string temp;
+@@ -117,7 +117,7 @@ bool AtomABST::ReadData() {
+ 			FATAL("Unable to read SERVERENTRY.serverBaseURL");
+ 			return false;
+ 		}
+-				//FINEST("%"PRIu8"; SERVERENTRY.serverBaseURL: %s", i, STR(temp));
++				//FINEST("%" PRIu8 "; SERVERENTRY.serverBaseURL: %s", i, STR(temp));
+ 		ADD_VECTOR_END(_serverEntryTable, temp);
+ 	}
+ 
+@@ -125,7 +125,7 @@ bool AtomABST::ReadData() {
+ 		FATAL("Unable to read _qualityEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_qualityEntryCount: %"PRIu8, _qualityEntryCount);
++		//FINEST("_qualityEntryCount: %" PRIu8 , _qualityEntryCount);
+ 
+ 	for (uint8_t i = 0; i < _qualityEntryCount; i++) {
+ 		string temp;
+@@ -133,7 +133,7 @@ bool AtomABST::ReadData() {
+ 			FATAL("Unable to read QUALITYENTRY.qualitySegmentUrlModifier");
+ 			return false;
+ 		}
+-				//FINEST("%"PRIu8"; QUALITYENTRY.qualitySegmentUrlModifier: %s", i, STR(temp));
++				//FINEST("%" PRIu8 "; QUALITYENTRY.qualitySegmentUrlModifier: %s", i, STR(temp));
+ 		ADD_VECTOR_END(_qualityEntryTable, temp);
+ 	}
+ 
+@@ -153,7 +153,7 @@ bool AtomABST::ReadData() {
+ 		FATAL("Unable to read _segmentRunTableCount");
+ 		return false;
+ 	}
+-		//FINEST("_segmentRunTableCount: %"PRIu8, _segmentRunTableCount);
++		//FINEST("_segmentRunTableCount: %" PRIu8 , _segmentRunTableCount);
+ 
+ 	for (uint8_t i = 0; i < _segmentRunTableCount; i++) {
+ 		BaseAtom *pAtom = GetDoc()->ReadAtom(this);
+@@ -161,7 +161,7 @@ bool AtomABST::ReadData() {
+ 			FATAL("Unable to read atoms");
+ 			return false;
+ 		}
+-				//FINEST("%"PRIu8"; _segmentRunTableEntries: %p", i, pAtom);
++				//FINEST("%" PRIu8 "; _segmentRunTableEntries: %p", i, pAtom);
+ 		ADD_VECTOR_END(_segmentRunTableEntries, pAtom);
+ 	}
+ 
+@@ -169,7 +169,7 @@ bool AtomABST::ReadData() {
+ 		FATAL("Unable to read _fragmentRunTableCount");
+ 		return false;
+ 	}
+-		//FINEST("_fragmentRunTableCount: %"PRIu8, _fragmentRunTableCount);
++		//FINEST("_fragmentRunTableCount: %" PRIu8 , _fragmentRunTableCount);
+ 
+ 	for (uint8_t i = 0; i < _fragmentRunTableCount; i++) {
+ 		BaseAtom *pAtom = GetDoc()->ReadAtom(this);
+@@ -177,7 +177,7 @@ bool AtomABST::ReadData() {
+ 			FATAL("Unable to read atoms");
+ 			return false;
+ 		}
+-				//FINEST("%"PRIu8"; _fragmentRunTableEntries: %p", i, pAtom);
++				//FINEST("%" PRIu8 "; _fragmentRunTableEntries: %p", i, pAtom);
+ 		ADD_VECTOR_END(_fragmentRunTableEntries, pAtom);
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomafra.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomafra.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomafra.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomafra.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -38,19 +38,19 @@ bool AtomAFRA::ReadData() {
+ 		FATAL("Unable to read flags");
+ 		return false;
+ 	}
+-	//FINEST("flags: %"PRIu8, _flags);
++	//FINEST("flags: %" PRIu8 , _flags);
+ 
+ 	if (!ReadUInt32(_timeScale)) {
+ 		FATAL("Unable to read timeScale");
+ 		return false;
+ 	}
+-	//FINEST("_timeScale: %"PRIu32, _timeScale);
++	//FINEST("_timeScale: %" PRIu32 , _timeScale);
+ 
+ 	if (!ReadUInt32(_entryCount)) {
+ 		FATAL("Unable to read entryCount");
+ 		return false;
+ 	}
+-	//FINEST("_entryCount: %"PRIu32, _entryCount);
++	//FINEST("_entryCount: %" PRIu32 , _entryCount);
+ 
+ 	bool longOffsets = (_flags >> 6)&0x01;
+ 	bool longIds = (_flags >> 7)&0x01;
+@@ -75,7 +75,7 @@ bool AtomAFRA::ReadData() {
+ 			}
+ 			temp.offset = ui32;
+ 		}
+-				//FINEST("%"PRIu32": AFRAENTRY.Time: %"PRIu64"; AFRAENTRY.Offset: %"PRIu64, i, temp.time, temp.offset);
++				//FINEST("%" PRIu32 ": AFRAENTRY.Time: %" PRIu64 "; AFRAENTRY.Offset: %" PRIu64 , i, temp.time, temp.offset);
+ 		ADD_VECTOR_END(_localAccessEntries, temp);
+ 	}
+ 
+@@ -142,13 +142,13 @@ bool AtomAFRA::ReadData() {
+ 			}
+ 
+ 
+-			//			FINEST("%"PRIu32": GLOBALAFRAENTRY.Time: %"PRIu64"; GLOBALAFRAENTRY.Segment: %"PRIu32"; GLOBALAFRAENTRY.Fragment: %"PRIu32"; GLOBALAFRAENTRY.AfraOffset: %"PRIu64"; GLOBALAFRAENTRY.OffsetFromAfra: %"PRIu64,
++			//			FINEST("%" PRIu32 ": GLOBALAFRAENTRY.Time: %" PRIu64 "; GLOBALAFRAENTRY.Segment: %" PRIu32 "; GLOBALAFRAENTRY.Fragment: %" PRIu32 "; GLOBALAFRAENTRY.AfraOffset: %" PRIu64 "; GLOBALAFRAENTRY.OffsetFromAfra: %" PRIu64 ,
+ 			//					i, temp.time, temp.segment, temp.fragment, temp.afraOffset, temp.offsetFromAfra);
+ 			ADD_VECTOR_END(_globalAccessEntries, temp);
+ 		}
+ 	}
+ 
+-		//FINEST("%02"PRIx8"; timeScale: %"PRIu32"; entryCount: %"PRIu32"; globalEntryCount: %"PRIu32,
++		//FINEST("%02" PRIx8 "; timeScale: %" PRIu32 "; entryCount: %" PRIu32 "; globalEntryCount: %" PRIu32 ,
+ 		//		_flags, _timeScale, _entryCount, _globalEntryCount);
+ 
+ 	return true;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomafrt.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomafrt.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomafrt.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomafrt.cpp	2018-12-03 00:36:44.057384113 +1100
+@@ -37,13 +37,13 @@ bool AtomAFRT::ReadData() {
+ 		FATAL("Unable to read _timeScale");
+ 		return false;
+ 	}
+-		//FINEST("_timeScale: %"PRIu32, _timeScale);
++		//FINEST("_timeScale: %" PRIu32 , _timeScale);
+ 
+ 	if (!ReadUInt8(_qualityEntryCount)) {
+ 		FATAL("Unable to read _qualityEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_qualityEntryCount: %"PRIu8, _qualityEntryCount);
++		//FINEST("_qualityEntryCount: %" PRIu8 , _qualityEntryCount);
+ 
+ 	for (uint8_t i = 0; i < _qualityEntryCount; i++) {
+ 		string temp;
+@@ -51,7 +51,7 @@ bool AtomAFRT::ReadData() {
+ 			FATAL("Unable to read QualitySegmentUrlModifiers");
+ 			return false;
+ 		}
+-		//FINEST("%"PRIu8": QualitySegmentUrlModifiers: %s", i, STR(temp));
++		//FINEST("%" PRIu8 ": QualitySegmentUrlModifiers: %s", i, STR(temp));
+ 		ADD_VECTOR_END(_qualitySegmentUrlModifiers, temp);
+ 	}
+ 
+@@ -59,7 +59,7 @@ bool AtomAFRT::ReadData() {
+ 		FATAL("Unable to read _fragmentRunEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_fragmentRunEntryCount: %"PRIu32, _fragmentRunEntryCount);
++		//FINEST("_fragmentRunEntryCount: %" PRIu32 , _fragmentRunEntryCount);
+ 
+ 	for (uint32_t i = 0; i < _fragmentRunEntryCount; i++) {
+ 		FRAGMENTRUNENTRY temp = {0, 0, 0, 0};
+@@ -81,7 +81,7 @@ bool AtomAFRT::ReadData() {
+ 				return false;
+ 			}
+ 		}
+-				//FINEST("%"PRIu32": FRAGMENTRUNENTRY.FirstFragment: %"PRIu32"; FRAGMENTRUNENTRY.FirstFragmentTimestamp: %"PRIu64"; FRAGMENTRUNENTRY.FragmentDuration: %"PRIu32"; FRAGMENTRUNENTRY.DiscontinuityIndicator: %"PRIu8,
++				//FINEST("%" PRIu32 ": FRAGMENTRUNENTRY.FirstFragment: %" PRIu32 "; FRAGMENTRUNENTRY.FirstFragmentTimestamp: %" PRIu64 "; FRAGMENTRUNENTRY.FragmentDuration: %" PRIu32 "; FRAGMENTRUNENTRY.DiscontinuityIndicator: %" PRIu8 ,
+ 				//		i, temp.firstFragment, temp.firstFragmentTimestamp, temp.fragmentDuration, temp.discontinuityIndicator);
+ 		ADD_VECTOR_END(_fragmentRunEntryTable, temp);
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomasrt.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomasrt.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomasrt.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomasrt.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -36,7 +36,7 @@ bool AtomASRT::ReadData() {
+ 		FATAL("Unable to read _qualityEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_qualityEntryCount: %"PRIu8, _qualityEntryCount);
++		//FINEST("_qualityEntryCount: %" PRIu8 , _qualityEntryCount);
+ 
+ 	for (uint8_t i = 0; i < _qualityEntryCount; i++) {
+ 		string temp;
+@@ -44,7 +44,7 @@ bool AtomASRT::ReadData() {
+ 			FATAL("Unable to read _qualitySegmentUrlModifiers");
+ 			return false;
+ 		}
+-		//		FINEST("%"PRIu8": _qualitySegmentUrlModifiers: %s", i, STR(temp));
++		//		FINEST("%" PRIu8 ": _qualitySegmentUrlModifiers: %s", i, STR(temp));
+ 		ADD_VECTOR_END(_qualitySegmentUrlModifiers, temp);
+ 	}
+ 
+@@ -52,7 +52,7 @@ bool AtomASRT::ReadData() {
+ 		FATAL("Unable to read _segmentRunEntryCount");
+ 		return false;
+ 	}
+-		//FINEST("_segmentRunEntryCount: %"PRIu32, _segmentRunEntryCount);
++		//FINEST("_segmentRunEntryCount: %" PRIu32 , _segmentRunEntryCount);
+ 
+ 	for (uint32_t i = 0; i < _segmentRunEntryCount; i++) {
+ 		SEGMENTRUNENTRY temp;
+@@ -64,7 +64,7 @@ bool AtomASRT::ReadData() {
+ 			FATAL("Unable to read SEGMENTRUNENTRY.FragmentsPerSegment");
+ 			return false;
+ 		}
+-				//FINEST("%"PRIu32": SEGMENTRUNENTRY.FirstSegment: %"PRIu32"; SEGMENTRUNENTRY.FragmentsPerSegment: %"PRIu32,
++				//FINEST("%" PRIu32 ": SEGMENTRUNENTRY.FirstSegment: %" PRIu32 "; SEGMENTRUNENTRY.FragmentsPerSegment: %" PRIu32 ,
+ 				//		i, temp.firstSegment, temp.fragmentsPerSegment);
+ 		ADD_VECTOR_END(_segmentRunEntryTable, temp);
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomdata.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomdata.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomdata.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomdata.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -68,7 +68,7 @@ Variant AtomDATA::GetVariant() {
+ 		}
+ 		default:
+ 		{
+-			FATAL("Type %"PRIu32" not yet implemented", _type);
++			FATAL("Type %" PRIu32 " not yet implemented", _type);
+ 			return false;
+ 		}
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomelst.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomelst.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomelst.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomelst.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -73,7 +73,7 @@ bool AtomELST::ReadData() {
+ 			FATAL("Unable to read elst atom");
+ 			return false;
+ 		}
+-		//		FINEST("version: %"PRIu8"; segmentDuration: %"PRIu32"; mediaTime: %"PRIu32"; mediaRateInteger: %"PRIu16"; mediaRateFraction: %"PRIu16,
++		//		FINEST("version: %" PRIu8 "; segmentDuration: %" PRIu32 "; mediaTime: %" PRIu32 "; mediaRateInteger: %" PRIu16 "; mediaRateFraction: %" PRIu16 ,
+ 		//				_version,
+ 		//				entry.value._32.segmentDuration,
+ 		//				entry.value._32.mediaTime,
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomesds.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomesds.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomesds.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomesds.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -113,20 +113,20 @@ bool AtomESDS::ReadData() {
+ 			FATAL("Unable to read tag type and length");
+ 			return false;
+ 		}
+-		//FINEST("tag: %02"PRIx8"; length: %"PRIu32, tag, length);
++		//FINEST("tag: %02" PRIx8 "; length: %" PRIu32 , tag, length);
+ 
+ 		switch (tag) {
+ 			case ESTAG_ES_DescrTag:
+ 			{
+ 				if (!ReadESDescrTag()) {
+-					FATAL("Unable to read tag: 0x%02"PRIu8, tag);
++					FATAL("Unable to read tag: 0x%02" PRIu8 , tag);
+ 					return false;
+ 				}
+ 				break;
+ 			}
+ 			default:
+ 			{
+-				FATAL("Unknown descriptor tag: 0x%02"PRIu8, tag);
++				FATAL("Unknown descriptor tag: 0x%02" PRIu8 , tag);
+ 				return false;
+ 			}
+ 		}
+@@ -256,7 +256,7 @@ bool AtomESDS::ReadDecoderConfigDescript
+ 		case 0x6c: //Visual ISO/IEC 10918-1
+ 		case 0x6e: //Visual ISO/IEC 15444-1
+ 		{
+-			FATAL("Visual objectTypeIndication 0x%02"PRIx8" not implemented yet", objectTypeIndication);
++			FATAL("Visual objectTypeIndication 0x%02" PRIx8 " not implemented yet", objectTypeIndication);
+ 			return false;
+ 		}
+ 		case 0x6b: //Audio ISO/IEC 11172-3
+@@ -293,12 +293,12 @@ bool AtomESDS::ReadDecoderConfigDescript
+ 		case 0x67: //Audio ISO/IEC 13818-7 LowComplexity Profile
+ 		case 0x68: //Audio ISO/IEC 13818-7 Scalable Sampling Rate Profile
+ 		{
+-			FATAL("Audio objectTypeIndication 0x%02"PRIx8" not implemented yet", objectTypeIndication);
++			FATAL("Audio objectTypeIndication 0x%02" PRIx8 " not implemented yet", objectTypeIndication);
+ 			return false;
+ 		}
+ 		default:
+ 		{
+-			FATAL("objectTypeIndication 0x%02"PRIx8" not supported", objectTypeIndication);
++			FATAL("objectTypeIndication 0x%02" PRIx8 " not supported", objectTypeIndication);
+ 			return false;
+ 		}
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomtfhd.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomtfhd.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomtfhd.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomtfhd.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -71,41 +71,41 @@ bool AtomTFHD::ReadData() {
+ 		FATAL("Unable to read track ID");
+ 		return false;
+ 	}
+-	//FINEST("_trackID: %"PRIi32, _trackID);
++	//FINEST("_trackID: %" PRIi32 , _trackID);
+ 	if (HasBaseDataOffset()) {
+ 		if (!ReadInt64(_baseDataOffset)) {
+ 			FATAL("Unable to read base data offset");
+ 			return false;
+ 		}
+-		//FINEST("_baseDataOffset: %"PRIi64, _baseDataOffset);
++		//FINEST("_baseDataOffset: %" PRIi64 , _baseDataOffset);
+ 	}
+ 	if (HasSampleDescriptionIndex()) {
+ 		if (!ReadInt32(_sampleDescriptionIndex)) {
+ 			FATAL("Unable to read sample description index");
+ 			return false;
+ 		}
+-		//FINEST("_sampleDescriptionIndex: %"PRIi32, _sampleDescriptionIndex);
++		//FINEST("_sampleDescriptionIndex: %" PRIi32 , _sampleDescriptionIndex);
+ 	}
+ 	if (HasDefaultSampleDuration()) {
+ 		if (!ReadInt32(_defaultSampleDuration)) {
+ 			FATAL("Unable to read default sample duration");
+ 			return false;
+ 		}
+-		//FINEST("_defaultSampleDuration: %"PRIi32, _defaultSampleDuration);
++		//FINEST("_defaultSampleDuration: %" PRIi32 , _defaultSampleDuration);
+ 	}
+ 	if (HasDefaultSampleSize()) {
+ 		if (!ReadInt32(_defaultSampleSize)) {
+ 			FATAL("Unable to read default sample size");
+ 			return false;
+ 		}
+-		//FINEST("_defaultSampleSize: %"PRIi32, _defaultSampleSize);
++		//FINEST("_defaultSampleSize: %" PRIi32 , _defaultSampleSize);
+ 	}
+ 	if (HasDefaultSampleFlags()) {
+ 		if (!ReadInt32(_defaultSampleFlags)) {
+ 			FATAL("Unable to read default sample flags");
+ 			return false;
+ 		}
+-		//FINEST("_defaultSampleFlags: %"PRIi32, _defaultSampleFlags);
++		//FINEST("_defaultSampleFlags: %" PRIi32 , _defaultSampleFlags);
+ 	}
+ 	return true;
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomtrun.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomtrun.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomtrun.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomtrun.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -70,20 +70,20 @@ bool AtomTRUN::ReadData() {
+ 		FATAL("Unable to read sample count");
+ 		return false;
+ 	}
+-	//FINEST("_sampleCount: %"PRIu32, _sampleCount);
++	//FINEST("_sampleCount: %" PRIu32 , _sampleCount);
+ 	if (HasDataOffset()) {
+ 		if (!ReadInt32(_dataOffset)) {
+ 			FATAL("Unable to read data offset");
+ 			return false;
+ 		}
+-		//FINEST("_dataOffset: %"PRIi32, _dataOffset);
++		//FINEST("_dataOffset: %" PRIi32 , _dataOffset);
+ 	}
+ 	if (HasFirstSampleFlags()) {
+ 		if (!ReadUInt32(_firstSampleFlags)) {
+ 			FATAL("Unable to read first sample flags");
+ 			return false;
+ 		}
+-		//FINEST("_firstSampleFlags: %"PRIu32, _firstSampleFlags);
++		//FINEST("_firstSampleFlags: %" PRIu32 , _firstSampleFlags);
+ 	}
+ 	for (uint32_t i = 0; i < _sampleCount; i++) {
+ 		TRUNSample *pSample = new TRUNSample();
+@@ -92,28 +92,28 @@ bool AtomTRUN::ReadData() {
+ 				FATAL("Unable to read sample duration");
+ 				return false;
+ 			}
+-			//FINEST("duration: %"PRIu32, pSample->duration);
++			//FINEST("duration: %" PRIu32 , pSample->duration);
+ 		}
+ 		if (HasSampleSize()) {
+ 			if (!ReadUInt32(pSample->size)) {
+ 				FATAL("Unable to read sample size");
+ 				return false;
+ 			}
+-			//FINEST("size: %"PRIu32, pSample->size);
++			//FINEST("size: %" PRIu32 , pSample->size);
+ 		}
+ 		if (HasSampleFlags()) {
+ 			if (!ReadUInt32(pSample->flags)) {
+ 				FATAL("Unable to read sample flags");
+ 				return false;
+ 			}
+-			//FINEST("flags: %"PRIu32, pSample->flags);
++			//FINEST("flags: %" PRIu32 , pSample->flags);
+ 		}
+ 		if (HasSampleCompositionTimeOffsets()) {
+ 			if (!ReadUInt32(pSample->compositionTimeOffset)) {
+ 				FATAL("Unable to read sample composition time offset");
+ 				return false;
+ 			}
+-			//FINEST("compositionTimeOffset: %"PRIu32, pSample->compositionTimeOffset);
++			//FINEST("compositionTimeOffset: %" PRIu32 , pSample->compositionTimeOffset);
+ 		}
+ 		ADD_VECTOR_END(_samples, pSample);
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomuuid.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomuuid.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/atomuuid.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/atomuuid.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -33,7 +33,7 @@ bool AtomUUID::Read() {
+ 		FATAL("Unable to read UUID");
+ 		return false;
+ 	}
+-	_metadata["uuid"] = format("%02"PRIx8"%02"PRIx8"%02"PRIx8"%02"PRIx8"-%02"PRIx8"%02"PRIx8"-%02"PRIx8"%02"PRIx8"-%02"PRIx8"%02"PRIx8"-%02"PRIx8"%02"PRIx8"%02"PRIx8"%02"PRIx8"%02"PRIx8"%02"PRIx8,
++	_metadata["uuid"] = format("%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "-%02" PRIx8 "%02" PRIx8 "-%02" PRIx8 "%02" PRIx8 "-%02" PRIx8 "%02" PRIx8 "-%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 "%02" PRIx8 ,
+ 			buffer[0],
+ 			buffer[1],
+ 			buffer[2],
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/baseatom.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/baseatom.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/baseatom.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/baseatom.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -60,7 +60,7 @@ MP4Document * BaseAtom::GetDoc() {
+ }
+ 
+ BaseAtom::operator string() {
+-	return format("S: %"PRIu64"(0x%"PRIx64"); L: %"PRIu64"(0x%"PRIx64"); T: %u(%s)",
++	return format("S: %" PRIu64 "(0x%" PRIx64 "); L: %" PRIu64 "(0x%" PRIx64 "); T: %u(%s)",
+ 			_start, _start, _size, _size, GetTypeNumeric(), STR(GetTypeString()));
+ }
+ 
+@@ -83,7 +83,7 @@ void BaseAtom::SetParentAtom(BaseAtom *p
+ 
+ bool BaseAtom::SkipRead(bool issueWarn) {
+ 	if (issueWarn)
+-		WARN("Atom type %s skipped. Position 0x%"PRIx64"(%"PRIu64"); Size: 0x%"PRIx64"(%"PRIu64")",
++		WARN("Atom type %s skipped. Position 0x%" PRIx64 "(%" PRIu64 "); Size: 0x%" PRIx64 "(%" PRIu64 ")",
+ 			STR(GetTypeString()), _start, _start, _size, _size);
+ 	return _pDoc->GetMediaFile().SeekTo(_start + _size);
+ }
+@@ -94,7 +94,7 @@ uint64_t BaseAtom::CurrentPosition() {
+ 
+ bool BaseAtom::CheckBounds(uint64_t size) {
+ 	if (CurrentPosition() + size > _start + _size) {
+-		FATAL("Reached the end of the atom: Current pos: %"PRIu64"; Wanted size: %"PRIu64"; atom start: %"PRIu64"; atom size: %"PRIu64,
++		FATAL("Reached the end of the atom: Current pos: %" PRIu64 "; Wanted size: %" PRIu64 "; atom start: %" PRIu64 "; atom size: %" PRIu64 ,
+ 				CurrentPosition(), size, _start, _size);
+ 		return false;
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/boxatom.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/boxatom.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/boxatom.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/boxatom.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -40,7 +40,7 @@ bool BoxAtom::Read() {
+ 		}
+ 		if (!pAtom->IsIgnored()) {
+ 			if (!AtomCreated(pAtom)) {
+-				FATAL("Unable to signal AtomCreated for atom %s (%"PRIx64")",
++				FATAL("Unable to signal AtomCreated for atom %s (%" PRIx64 ")",
+ 						STR(GetTypeString()), _start);
+ 				return false;
+ 			}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/mp4document.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/mp4document.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/mp4document.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/mp4document.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -363,11 +363,11 @@ BaseAtom * MP4Document::ReadAtom(BaseAto
+ 
+ 	if (currentPos + pAtom->GetSize() != _mediaFile.Cursor()) {
+ 		if (currentPos + pAtom->GetSize() < _mediaFile.Cursor()) {
+-			FATAL("atom overflow: atom start: %"PRIu64"; Atom size: %"PRIu64"; currentPos: %"PRIu64,
++			FATAL("atom overflow: atom start: %" PRIu64 "; Atom size: %" PRIu64 "; currentPos: %" PRIu64 ,
+ 					currentPos, pAtom->GetSize(), _mediaFile.Cursor());
+ 			return NULL;
+ 		} else {
+-			WARN("wasted space inside atom %s! atom start: %"PRIu64"; Atom size: %"PRIu64"; currentPos: %"PRIu64,
++			WARN("wasted space inside atom %s! atom start: %" PRIu64 "; Atom size: %" PRIu64 "; currentPos: %" PRIu64 ,
+ 					STR(pAtom->GetTypeString()),
+ 					currentPos, pAtom->GetSize(), _mediaFile.Cursor());
+ 			if (!_mediaFile.SeekTo(pAtom->GetStart() + pAtom->GetSize())) {
+@@ -519,7 +519,7 @@ bool MP4Document::BuildFrames() {
+ 				FATAL("Unable to initialize AAC codec");
+ 				return false;
+ 			}
+-			//		FINEST("Start: %"PRIu64" (%"PRIx64"); Length: %"PRIu64" (%"PRIx64");",
++			//		FINEST("Start: %" PRIu64 " (%" PRIx64 "); Length: %" PRIu64 " (%" PRIx64 ");",
+ 			//				audioHeader.start, audioHeader.start, audioHeader.length,
+ 			//				audioHeader.length);
+ 		}
+@@ -676,16 +676,16 @@ bool MP4Document::BuildMOOVFrames(bool a
+ 	if (pCTSS != NULL) {
+ 		compositionOffsets = pCTSS->GetEntries();
+ 		if (sampleSize.size() != compositionOffsets.size()) {
+-			WARN("composition offsets count != samples count; compositionOffsets: %"PRIz"u; sampleSize.size: %"PRIz"u",
++			WARN("composition offsets count != samples count; compositionOffsets: %" PRIz "u; sampleSize.size: %" PRIz "u",
+ 					compositionOffsets.size(),
+ 					sampleSize.size());
+ 			for (uint32_t i = (uint32_t) compositionOffsets.size(); i < (uint32_t) sampleSize.size(); i++)
+ 				ADD_VECTOR_END(compositionOffsets, 0);
+-			WARN("composition offsets padded with 0. Now size is %"PRIz"u",
++			WARN("composition offsets padded with 0. Now size is %" PRIz "u",
+ 					compositionOffsets.size());
+ 		}
+ 	}
+-	INFO("audio: %d; keyFrames: %"PRIz"u; frames: %"PRIz"u; compositionOffsets: %"PRIz"u",
++	INFO("audio: %d; keyFrames: %" PRIz "u; frames: %" PRIz "u; compositionOffsets: %" PRIz "u",
+ 			audio, keyFrames.size(), sampleSize.size(), compositionOffsets.size());
+ 
+ 	uint32_t timeScale = pMDHD->GetTimeScale();
+@@ -700,7 +700,7 @@ bool MP4Document::BuildMOOVFrames(bool a
+ 	for (uint32_t i = 0; i < iterrationCount; i++) {
+ 		MediaFrame frame = {0, 0, 0, 0, 0, 0, 0, 0};
+ 		if (sample2Chunk[i] >= chunkOffsets.size()) {
+-			WARN("Bogus sample2Chunk at index %"PRIu32"; Max value is: %"PRIz"u and we got %"PRIu32,
++			WARN("Bogus sample2Chunk at index %" PRIu32 "; Max value is: %" PRIz "u and we got %" PRIu32 ,
+ 					i,
+ 					chunkOffsets.size() - 1,
+ 					sample2Chunk[i]);
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/versionedatom.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/versionedatom.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/mp4/versionedatom.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/mp4/versionedatom.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -35,13 +35,13 @@ bool VersionedAtom::Read() {
+ 		FATAL("Unable to read version");
+ 		return false;
+ 	}
+-	//FINEST("_version: %"PRIu8, _version);
++	//FINEST("_version: %" PRIu8 , _version);
+ 
+ 	if (!ReadArray(_flags, 3)) {
+ 		FATAL("Unable to read flags");
+ 		return false;
+ 	}
+-	//FINEST("_flags: %"PRIx8"%"PRIx8"%"PRIx8, _flags[0], _flags[1], _flags[2]);
++	//FINEST("_flags: %" PRIx8 "%" PRIx8 "%" PRIx8 , _flags[0], _flags[1], _flags[2]);
+ 
+ 	return ReadData();
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/streammetadataresolver.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/streammetadataresolver.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/streammetadataresolver.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/streammetadataresolver.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -48,7 +48,7 @@ bool StreamMetadataResolverTimer::TimePe
+ 	FOR_VECTOR(*_pWorkQueue, i) {
+ 		if (_pResolver == NULL)
+ 			continue;
+-		//		FINEST("mediaFullPath: %s statsFile: %s operation: %d value: %"PRIu64,
++		//		FINEST("mediaFullPath: %s statsFile: %s operation: %d value: %" PRIu64 ,
+ 		//				STR((*_pWorkQueue)[i].mediaFullPath),
+ 		//				STR((*_pWorkQueue)[i].statsFile),
+ 		//				(*_pWorkQueue)[i].operation,
+@@ -591,7 +591,7 @@ void StreamMetadataResolver::UpdateStats
+ 		}
+ 		default:
+ 		{
+-			WARN("Stats operation %"PRIu32" not implemented", (uint32_t) operation);
++			WARN("Stats operation %" PRIu32 " not implemented", (uint32_t) operation);
+ 			break;
+ 		}
+ 	}
+@@ -662,7 +662,7 @@ bool StreamMetadataResolver::ComputeSeek
+ 			result.statsFileFullPath(result.mediaFullPath() + "." + MEDIA_TYPE_STATS);
+ 		}
+ 	} else {
+-		string fingerprint = format("%s_%d_%"PRIu32,
++		string fingerprint = format("%s_%d_%" PRIu32 ,
+ 				STR(result.mediaFullPath()),
+ 				storage.keyframeSeek(),
+ 				storage.seekGranularity());
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/avcontext.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/avcontext.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/avcontext.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/avcontext.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -293,10 +293,10 @@ bool AACAVContext::HandleData() {
+ 				_bucket.Ignore(1);
+ 				_droppedBytesCount++;
+ 				_markerRetryCount++;
+-				//FINEST("_markerRetryCount: %"PRIu32, _markerRetryCount);
++				//FINEST("_markerRetryCount: %" PRIu32 , _markerRetryCount);
+ 				if (_markerRetryCount >= TS_MAX_ADTS_DETECTION_COUNT) {
+ 					BaseInStream *pInStream = GetInStream();
+-					FATAL("Unable to reliably detect AAC ADTS headers after %"PRIu32" bytes scanned for ADTS marker. Stream %s corrupted",
++					FATAL("Unable to reliably detect AAC ADTS headers after %" PRIu32 " bytes scanned for ADTS marker. Stream %s corrupted",
+ 							TS_MAX_ADTS_DETECTION_COUNT,
+ 							pInStream != NULL ? STR(*pInStream) : "");
+ 					return false;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsdocument.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsdocument.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsdocument.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsdocument.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -95,7 +95,7 @@ bool TSDocument::ParseDocument() {
+ 	}
+ 
+ 	if (!_mediaFile.SeekTo(_chunkSizeDetectionCount)) {
+-		FATAL("Unable to seek at %"PRIu32, _chunkSizeDetectionCount);
++		FATAL("Unable to seek at %" PRIu32 , _chunkSizeDetectionCount);
+ 		return false;
+ 	}
+ 
+@@ -116,7 +116,7 @@ bool TSDocument::ParseDocument() {
+ 		uint32_t blockSize = defaultBlockSize < available ? defaultBlockSize : available;
+ 		buffer.MoveData();
+ 		if (!buffer.ReadFromFs(_mediaFile, blockSize)) {
+-			WARN("Unable to read %"PRIu32" bytes from file", blockSize);
++			WARN("Unable to read %" PRIu32 " bytes from file", blockSize);
+ 			break;
+ 		}
+ 		if (!_pParser->ProcessBuffer(buffer, false)) {
+@@ -173,7 +173,7 @@ bool TSDocument::DetermineChunkSize() {
+ 			return false;
+ 		}
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_188, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_188, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_188)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -181,7 +181,7 @@ bool TSDocument::DetermineChunkSize() {
+ 		if (_chunkSize != 0)
+ 			return true;
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_204, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_204, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_204)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -189,7 +189,7 @@ bool TSDocument::DetermineChunkSize() {
+ 		if (_chunkSize != 0)
+ 			return true;
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_208, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_208, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_208)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -204,17 +204,17 @@ bool TSDocument::DetermineChunkSize() {
+ bool TSDocument::GetByteAt(uint64_t offset, uint8_t &byte) {
+ 	uint64_t backup = _mediaFile.Cursor();
+ 	if (!_mediaFile.SeekTo(offset)) {
+-		FATAL("Unable to seek to offset %"PRIu64, offset);
++		FATAL("Unable to seek to offset %" PRIu64 , offset);
+ 		return false;
+ 	}
+ 
+ 	if (!_mediaFile.ReadUI8(&byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu64, offset);
++		FATAL("Unable to read byte at offset %" PRIu64 , offset);
+ 		return false;
+ 	}
+ 
+ 	if (!_mediaFile.SeekTo(backup)) {
+-		FATAL("Unable to seek to offset %"PRIu64, backup);
++		FATAL("Unable to seek to offset %" PRIu64 , backup);
+ 		return false;
+ 	}
+ 
+@@ -228,7 +228,7 @@ bool TSDocument::TestChunkSize(uint8_t c
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount);
+ 		return false;
+ 	}
+ 
+@@ -236,7 +236,7 @@ bool TSDocument::TestChunkSize(uint8_t c
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount + chunkSize, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount + chunkSize);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount + chunkSize);
+ 		return false;
+ 	}
+ 
+@@ -244,7 +244,7 @@ bool TSDocument::TestChunkSize(uint8_t c
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount + 2 * chunkSize, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount + 2 * chunkSize);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount + 2 * chunkSize);
+ 		return false;
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsframereader.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsframereader.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsframereader.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsframereader.cpp	2018-12-03 00:36:44.061384113 +1100
+@@ -92,7 +92,7 @@ bool TSFrameReader::ReadFrame() {
+ 		}
+ 		_chunkBuffer.MoveData();
+ 		if (!_chunkBuffer.ReadFromFs(*_pFile, (uint32_t) available)) {
+-			FATAL("Unable to read %"PRIu8" bytes from file", _chunkSize);
++			FATAL("Unable to read %" PRIu8 " bytes from file", _chunkSize);
+ 			return false;
+ 		}
+ 	}
+@@ -168,7 +168,7 @@ bool TSFrameReader::DetermineChunkSize()
+ 			return false;
+ 		}
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_188, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_188, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_188)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -176,7 +176,7 @@ bool TSFrameReader::DetermineChunkSize()
+ 		if (_chunkSize != 0)
+ 			return true;
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_204, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_204, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_204)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -184,7 +184,7 @@ bool TSFrameReader::DetermineChunkSize()
+ 		if (_chunkSize != 0)
+ 			return true;
+ 
+-		//FINEST("Check for %"PRIu8" at %"PRIu8, (uint8_t) TS_CHUNK_208, _chunkSizeDetectionCount);
++		//FINEST("Check for %" PRIu8 " at %" PRIu8 , (uint8_t) TS_CHUNK_208, _chunkSizeDetectionCount);
+ 		if (!TestChunkSize(TS_CHUNK_208)) {
+ 			FATAL("I give up. I'm unable to detect the ts chunk size");
+ 			return false;
+@@ -203,7 +203,7 @@ bool TSFrameReader::TestChunkSize(uint8_
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount);
+ 		return false;
+ 	}
+ 
+@@ -211,7 +211,7 @@ bool TSFrameReader::TestChunkSize(uint8_
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount + chunkSize, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount + chunkSize);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount + chunkSize);
+ 		return false;
+ 	}
+ 
+@@ -219,7 +219,7 @@ bool TSFrameReader::TestChunkSize(uint8_
+ 		return true;
+ 
+ 	if (!GetByteAt(_chunkSizeDetectionCount + 2 * chunkSize, byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu32, _chunkSizeDetectionCount + 2 * chunkSize);
++		FATAL("Unable to read byte at offset %" PRIu32 , _chunkSizeDetectionCount + 2 * chunkSize);
+ 		return false;
+ 	}
+ 
+@@ -233,17 +233,17 @@ bool TSFrameReader::TestChunkSize(uint8_
+ bool TSFrameReader::GetByteAt(uint64_t offset, uint8_t &byte) {
+ 	uint64_t backup = _pFile->Cursor();
+ 	if (!_pFile->SeekTo(offset)) {
+-		FATAL("Unable to seek to offset %"PRIu64, offset);
++		FATAL("Unable to seek to offset %" PRIu64 , offset);
+ 		return false;
+ 	}
+ 
+ 	if (!_pFile->ReadUI8(&byte)) {
+-		FATAL("Unable to read byte at offset %"PRIu64, offset);
++		FATAL("Unable to read byte at offset %" PRIu64 , offset);
+ 		return false;
+ 	}
+ 
+ 	if (!_pFile->SeekTo(backup)) {
+-		FATAL("Unable to seek to offset %"PRIu64, backup);
++		FATAL("Unable to seek to offset %" PRIu64 , backup);
+ 		return false;
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tspacketpat.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tspacketpat.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tspacketpat.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tspacketpat.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -61,14 +61,14 @@ TSPacketPAT::operator string() {
+ 	result += format("lastSectionNumber:      %hhu\n", _lastSectionNumber);
+ 	result += format("crc:                    %x\n", _crc);
+ 	result += format("entriesCount:           %u\n", _entriesCount);
+-	result += format("NIT count:              %"PRIz"u\n", _networkPids.size());
++	result += format("NIT count:              %" PRIz "u\n", _networkPids.size());
+ 	if (_networkPids.size() > 0) {
+ 
+ 		FOR_MAP(_networkPids, uint16_t, uint16_t, i) {
+ 			result += format("\tNIT %hu: %hu\n", MAP_KEY(i), MAP_VAL(i));
+ 		}
+ 	}
+-	result += format("PMT count:              %"PRIz"u\n", _programPids.size());
++	result += format("PMT count:              %" PRIz "u\n", _programPids.size());
+ 	if (_programPids.size() > 0) {
+ 
+ 		FOR_MAP(_programPids, uint16_t, uint16_t, i) {
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tspacketpmt.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tspacketpmt.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tspacketpmt.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tspacketpmt.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -31,32 +31,32 @@ TSPacketPMT::~TSPacketPMT() {
+ 
+ TSPacketPMT::operator string() {
+ 	string result = "";
+-	result += format("tableId:                %"PRIu8"\n", _tableId);
+-	result += format("sectionSyntaxIndicator: %"PRIu8"\n", (uint8_t) _sectionSyntaxIndicator);
+-	result += format("reserved1:              %"PRIu8"\n", (uint8_t) _reserved1);
+-	result += format("reserved2:              %"PRIu8"\n", _reserved2);
+-	result += format("sectionLength:          %"PRIu16"\n", _sectionLength);
+-	result += format("programNumber:          %"PRIu16"\n", _programNumber);
+-	result += format("reserved3:              %"PRIu8"\n", _reserved3);
+-	result += format("versionNumber:          %"PRIu8"\n", _versionNumber);
+-	result += format("currentNextIndicator:   %"PRIu8"\n", (uint8_t) _currentNextIndicator);
+-	result += format("sectionNumber:          %"PRIu8"\n", _sectionNumber);
+-	result += format("lastSectionNumber:      %"PRIu8"\n", _lastSectionNumber);
+-	result += format("reserved4:              %"PRIu8"\n", _reserved4);
+-	result += format("pcrPid:                 %"PRIu16"\n", _pcrPid);
+-	result += format("reserved5:              %"PRIu8"\n", _reserved5);
+-	result += format("programInfoLength:      %"PRIu16"\n", _programInfoLength);
+-	result += format("crc:                    0x%08"PRIx32"\n", _crc);
+-	result += format("descriptors count:      %"PRIz"u\n", _programInfoDescriptors.size());
++	result += format("tableId:                %" PRIu8 "\n", _tableId);
++	result += format("sectionSyntaxIndicator: %" PRIu8 "\n", (uint8_t) _sectionSyntaxIndicator);
++	result += format("reserved1:              %" PRIu8 "\n", (uint8_t) _reserved1);
++	result += format("reserved2:              %" PRIu8 "\n", _reserved2);
++	result += format("sectionLength:          %" PRIu16 "\n", _sectionLength);
++	result += format("programNumber:          %" PRIu16 "\n", _programNumber);
++	result += format("reserved3:              %" PRIu8 "\n", _reserved3);
++	result += format("versionNumber:          %" PRIu8 "\n", _versionNumber);
++	result += format("currentNextIndicator:   %" PRIu8 "\n", (uint8_t) _currentNextIndicator);
++	result += format("sectionNumber:          %" PRIu8 "\n", _sectionNumber);
++	result += format("lastSectionNumber:      %" PRIu8 "\n", _lastSectionNumber);
++	result += format("reserved4:              %" PRIu8 "\n", _reserved4);
++	result += format("pcrPid:                 %" PRIu16 "\n", _pcrPid);
++	result += format("reserved5:              %" PRIu8 "\n", _reserved5);
++	result += format("programInfoLength:      %" PRIu16 "\n", _programInfoLength);
++	result += format("crc:                    0x%08" PRIx32 "\n", _crc);
++	result += format("descriptors count:      %" PRIz "u\n", _programInfoDescriptors.size());
+ 	for (uint32_t i = 0; i < _programInfoDescriptors.size(); i++) {
+ 		result += format("\t%s", STR(_programInfoDescriptors[i]));
+ 		if (i != _programInfoDescriptors.size() - 1)
+ 			result += "\n";
+ 	}
+-	result += format("streams count:          %"PRIz"u\n", _streams.size());
++	result += format("streams count:          %" PRIz "u\n", _streams.size());
+ 
+ 	FOR_MAP(_streams, uint16_t, TSStreamInfo, i) {
+-		result += format("\t%"PRIu16": %s\n", MAP_KEY(i), STR(MAP_VAL(i).toString(1)));
++		result += format("\t%" PRIu16 ": %s\n", MAP_KEY(i), STR(MAP_VAL(i).toString(1)));
+ 	}
+ 	return result;
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsparser.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsparser.cpp
+--- crtmpserver-org/sources/thelib/src/mediaformats/readers/ts/tsparser.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/mediaformats/readers/ts/tsparser.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -169,7 +169,7 @@ bool TSParser::ProcessPacket(uint32_t pa
+ 		case PID_TYPE_UNKNOWN:
+ 		{
+ 			if (!MAP_HAS1(_unknownPids, pPIDDescriptor->pid)) {
+-				//WARN("PID %"PRIu16" not known yet", pPIDDescriptor->pid);
++				//WARN("PID %" PRIu16 " not known yet", pPIDDescriptor->pid);
+ 				_unknownPids[pPIDDescriptor->pid] = pPIDDescriptor->pid;
+ 			}
+ 			return true;
+@@ -182,7 +182,7 @@ bool TSParser::ProcessPacket(uint32_t pa
+ 		}
+ 		default:
+ 		{
+-			WARN("PID type not implemented: %d. Pid number: %"PRIu16,
++			WARN("PID type not implemented: %d. Pid number: %" PRIu16 ,
+ 					pPIDDescriptor->type, pPIDDescriptor->pid);
+ 			return false;
+ 		}
+@@ -451,7 +451,7 @@ bool TSParser::ProcessPidTypeAV(PIDDescr
+ 		if (length >= 8) {
+ 			if (((pData[3]&0xE0) != 0xE0)&&((pData[3]&0xC0) != 0xC0)) {
+ 				BaseInStream *pTemp = pPIDDescriptor->pAVContext->GetInStream();
+-				WARN("PID %"PRIu16" from %s is not h264/aac. The type is 0x%02"PRIx8,
++				WARN("PID %" PRIu16 " from %s is not h264/aac. The type is 0x%02" PRIx8 ,
+ 						pPIDDescriptor->pid,
+ 						pTemp != NULL ? STR(*pTemp) : "",
+ 						pData[3]);
+@@ -516,7 +516,7 @@ bool TSParser::ProcessPidTypeAV(PIDDescr
+ 			}
+ 
+ 			if (pPIDDescriptor->pAVContext->_dts.time > tempDtsTime) {
+-				WARN("Back timestamp: %.2f -> %.2f on pid %"PRIu16,
++				WARN("Back timestamp: %.2f -> %.2f on pid %" PRIu16 ,
+ 						pPIDDescriptor->pAVContext->_dts.time, tempDtsTime, pPIDDescriptor->pid);
+ 				pPIDDescriptor->pAVContext->DropPacket();
+ 				return true;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/epoll/iohandlermanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/iohandlermanager.cpp
+--- crtmpserver-org/sources/thelib/src/netio/epoll/iohandlermanager.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/iohandlermanager.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -116,7 +116,7 @@ void IOHandlerManager::RegisterIOHandler
+ 	size_t before = _activeIOHandlers.size();
+ 	_activeIOHandlers[pIOHandler->GetId()] = pIOHandler;
+ 	_fdStats.RegisterManaged(pIOHandler->GetType());
+-	DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before + 1,
++	DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before + 1,
+ 			STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ }
+ 
+@@ -126,7 +126,7 @@ void IOHandlerManager::UnRegisterIOHandl
+ 		FreeToken(pIOHandler);
+ 		size_t before = _activeIOHandlers.size();
+ 		_activeIOHandlers.erase(pIOHandler->GetId());
+-		DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before - 1,
++		DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before - 1,
+ 				STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ 	}
+ }
+@@ -302,7 +302,7 @@ bool IOHandlerManager::EnableTimer(IOHan
+ #ifdef HAS_EPOLL_TIMERS
+ 
+ string dumpTimerStruct(itimerspec &ts) {
+-	return format("it_interval\n\ttv_sec: %"PRIz"u\n\ttv_nsec: %ld\nit_value\n\ttv_sec: %"PRIz"u\n\ttv_nsec: %ld",
++	return format("it_interval\n\ttv_sec: %" PRIz "u\n\ttv_nsec: %ld\nit_value\n\ttv_sec: %" PRIz "u\n\ttv_nsec: %ld",
+ 			ts.it_interval.tv_sec,
+ 			ts.it_interval.tv_nsec,
+ 			ts.it_value.tv_sec,
+@@ -319,7 +319,7 @@ bool IOHandlerManager::EnableHighGranula
+ 	tmp.it_interval.tv_sec = milliseconds / 1000;
+ 	tmp.it_value.tv_nsec = (milliseconds % 1000)*1000000;
+ 	tmp.it_value.tv_sec = milliseconds / 1000;
+-	//	ASSERT("milliseconds: %"PRIu32"\n%s",
++	//	ASSERT("milliseconds: %" PRIu32 "\n%s",
+ 	//			milliseconds,
+ 	//			STR(dumpTimerStruct(tmp)));
+ 	if (timerfd_settime(pIOHandler->GetInboundFd(), 0, &tmp, &dummy) != 0) {
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/epoll/tcpacceptor.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/tcpacceptor.cpp
+--- crtmpserver-org/sources/thelib/src/netio/epoll/tcpacceptor.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/tcpacceptor.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -140,7 +140,7 @@ bool TCPAcceptor::Accept() {
+ 	if (!_enabled) {
+ 		CLOSE_SOCKET(fd);
+ 		_droppedCount++;
+-		WARN("Acceptor is not enabled. Client dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++		WARN("Acceptor is not enabled. Client dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 				inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 				ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 				STR(_ipAddress),
+@@ -209,7 +209,7 @@ bool TCPAcceptor::Drop() {
+ 	CLOSE_SOCKET(fd);
+ 	_droppedCount++;
+ 
+-	INFO("Client explicitly dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++	INFO("Client explicitly dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 			inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 			ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 			STR(_ipAddress),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/epoll/udpcarrier.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/udpcarrier.cpp
+--- crtmpserver-org/sources/thelib/src/netio/epoll/udpcarrier.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/epoll/udpcarrier.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -172,7 +172,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	uint32_t testVal = EHTONL(bindAddress.sin_addr.s_addr);
+ 	if ((testVal > 0xe0000000) && (testVal < 0xefffffff)) {
+-		INFO("Subscribe to multicast %s:%"PRIu16, STR(bindIp), bindPort);
++		INFO("Subscribe to multicast %s:%" PRIu16 , STR(bindIp), bindPort);
+ 		int activateBroadcast = 1;
+ 		if (setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &activateBroadcast,
+ 				sizeof (activateBroadcast)) != 0) {
+@@ -198,7 +198,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	if (bind(sock, (sockaddr *) & bindAddress, sizeof (sockaddr)) != 0) {
+ 		int err = errno;
+-		FATAL("Unable to bind on address: udp://%s:%"PRIu16"; Error was: (%d) %s",
++		FATAL("Unable to bind on address: udp://%s:%" PRIu16 "; Error was: (%d) %s",
+ 				STR(bindIp), bindPort, err, strerror(err));
+ 		CLOSE_SOCKET(sock);
+ 		return NULL;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/fdstats.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/fdstats.cpp
+--- crtmpserver-org/sources/thelib/src/netio/fdstats.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/fdstats.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -85,10 +85,10 @@ void BaseFdStats::ResetInOutBytes() {
+ 
+ BaseFdStats::operator string() {
+ #ifdef GLOBALLY_ACCOUNT_BYTES
+-	return format("current: %"PRId64"; max: %"PRId64"; total: %"PRIu64"; in: %"PRIu64"; out: %"PRIu64,
++	return format("current: %" PRId64 "; max: %" PRId64 "; total: %" PRIu64 "; in: %" PRIu64 "; out: %" PRIu64 ,
+ 			_current, _max, _total, _inBytes, _outBytes);
+ #else
+-	return format("current: %"PRId64"; max: %"PRId64"; total: %"PRIu64,
++	return format("current: %" PRId64 "; max: %" PRId64 "; total: %" PRIu64 ,
+ 			_current, _max, _total);
+ #endif /* GLOBALLY_ACCOUNT_BYTES */
+ }
+@@ -267,7 +267,7 @@ FdStats::operator string() {
+ 			"          managedUdp: %s\n"
+ 			"    managedNonTcpUdp: %s\n"
+ 			"              rawUdp: %s\n"
+-			"         grand total: current: %"PRId64"; max: %"PRId64"; total: %"PRIu64"; in: %"PRIu64"; out: %"PRIu64,
++			"         grand total: current: %" PRId64 "; max: %" PRId64 "; total: %" PRIu64 "; in: %" PRIu64 "; out: %" PRIu64 ,
+ 			STR(_managedTcp),
+ 			STR(_managedTcpAcceptors),
+ 			STR(_managedTcpConnectors),
+@@ -287,7 +287,7 @@ FdStats::operator string() {
+ 			"          managedUdp: %s\n"
+ 			"    managedNonTcpUdp: %s\n"
+ 			"              rawUdp: %s\n"
+-			"         grand total: current: %"PRId64"; max: %"PRId64"; total: %"PRIu64,
++			"         grand total: current: %" PRId64 "; max: %" PRId64 "; total: %" PRIu64 ,
+ 			STR(_managedTcp),
+ 			STR(_managedTcpAcceptors),
+ 			STR(_managedTcpConnectors),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/kqueue/iohandlermanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/iohandlermanager.cpp
+--- crtmpserver-org/sources/thelib/src/netio/kqueue/iohandlermanager.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/iohandlermanager.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -154,7 +154,7 @@ void IOHandlerManager::RegisterIOHandler
+ 	_activeIOHandlers[pIOHandler->GetId()] = pIOHandler;
+ 	SetupToken(pIOHandler);
+ 	_fdStats.RegisterManaged(pIOHandler->GetType());
+-	DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before + 1,
++	DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before + 1,
+ 			STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ }
+ 
+@@ -164,7 +164,7 @@ void IOHandlerManager::UnRegisterIOHandl
+ 		FreeToken(pIOHandler);
+ 		size_t before = _activeIOHandlers.size();
+ 		_activeIOHandlers.erase(pIOHandler->GetId());
+-		DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before - 1,
++		DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before - 1,
+ 				STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ 	}
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/kqueue/tcpacceptor.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/tcpacceptor.cpp
+--- crtmpserver-org/sources/thelib/src/netio/kqueue/tcpacceptor.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/tcpacceptor.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -134,7 +134,7 @@ bool TCPAcceptor::Accept() {
+ 	if (!_enabled) {
+ 		CLOSE_SOCKET(fd);
+ 		_droppedCount++;
+-		WARN("Acceptor is not enabled. Client dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++		WARN("Acceptor is not enabled. Client dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 				inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 				ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 				STR(_ipAddress),
+@@ -198,7 +198,7 @@ bool TCPAcceptor::Drop() {
+ 	CLOSE_SOCKET(fd);
+ 	_droppedCount++;
+ 
+-	INFO("Client explicitly dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++	INFO("Client explicitly dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 			inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 			ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 			STR(_ipAddress),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/kqueue/udpcarrier.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/udpcarrier.cpp
+--- crtmpserver-org/sources/thelib/src/netio/kqueue/udpcarrier.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/kqueue/udpcarrier.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -168,7 +168,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	uint32_t testVal = EHTONL(bindAddress.sin_addr.s_addr);
+ 	if ((testVal > 0xe0000000) && (testVal < 0xefffffff)) {
+-		INFO("Subscribe to multicast %s:%"PRIu16, STR(bindIp), bindPort);
++		INFO("Subscribe to multicast %s:%" PRIu16 , STR(bindIp), bindPort);
+ 		int activateBroadcast = 1;
+ 		if (setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &activateBroadcast,
+ 				sizeof (activateBroadcast)) != 0) {
+@@ -195,7 +195,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	if (bind(sock, (sockaddr *) & bindAddress, sizeof (sockaddr)) != 0) {
+ 		int err = errno;
+-		FATAL("Unable to bind on address: udp://%s:%"PRIu16"; Error was: (%d) %s",
++		FATAL("Unable to bind on address: udp://%s:%" PRIu16 "; Error was: (%d) %s",
+ 				STR(bindIp), bindPort, err, strerror(err));
+ 		CLOSE_SOCKET(sock);
+ 		return NULL;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/select/iohandlermanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/iohandlermanager.cpp
+--- crtmpserver-org/sources/thelib/src/netio/select/iohandlermanager.cpp	2018-12-02 23:43:27.601384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/iohandlermanager.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -94,7 +94,7 @@ void IOHandlerManager::RegisterIOHandler
+ 	size_t before = _activeIOHandlers.size();
+ 	_activeIOHandlers[pIOHandler->GetId()] = pIOHandler;
+ 	_fdStats.RegisterManaged(pIOHandler->GetType());
+-	DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before + 1,
++	DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before + 1,
+ 			STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ }
+ 
+@@ -107,7 +107,7 @@ void IOHandlerManager::UnRegisterIOHandl
+ 		_fdStats.UnRegisterManaged(pIOHandler->GetType());
+ 		size_t before = _activeIOHandlers.size();
+ 		_activeIOHandlers.erase(pIOHandler->GetId());
+-		DEBUG("Handlers count changed: %"PRIz"u->%"PRIz"u %s", before, before - 1,
++		DEBUG("Handlers count changed: %" PRIz "u->%" PRIz "u %s", before, before - 1,
+ 				STR(IOHandler::IOHTToString(pIOHandler->GetType())));
+ 	}
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/select/tcpacceptor.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/tcpacceptor.cpp
+--- crtmpserver-org/sources/thelib/src/netio/select/tcpacceptor.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/tcpacceptor.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -133,7 +133,7 @@ bool TCPAcceptor::Accept() {
+ 	if (!_enabled) {
+ 		CLOSE_SOCKET(fd);
+ 		_droppedCount++;
+-		WARN("Acceptor is not enabled. Client dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++		WARN("Acceptor is not enabled. Client dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 				inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 				ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 				STR(_ipAddress),
+@@ -196,7 +196,7 @@ bool TCPAcceptor::Drop() {
+ 	CLOSE_SOCKET(fd);
+ 	_droppedCount++;
+ 
+-	INFO("Client explicitly dropped: %s:%"PRIu16" -> %s:%"PRIu16,
++	INFO("Client explicitly dropped: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 			inet_ntoa(((sockaddr_in *) & address)->sin_addr),
+ 			ENTOHS(((sockaddr_in *) & address)->sin_port),
+ 			STR(_ipAddress),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/netio/select/udpcarrier.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/udpcarrier.cpp
+--- crtmpserver-org/sources/thelib/src/netio/select/udpcarrier.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/netio/select/udpcarrier.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -168,7 +168,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	uint32_t testVal = EHTONL(bindAddress.sin_addr.s_addr);
+ 	if ((testVal > 0xe0000000) && (testVal < 0xefffffff)) {
+-		INFO("Subscribe to multicast %s:%"PRIu16, STR(bindIp), bindPort);
++		INFO("Subscribe to multicast %s:%" PRIu16 , STR(bindIp), bindPort);
+ 		int activateBroadcast = 1;
+ 		if (setsockopt(sock, SOL_SOCKET, SO_BROADCAST, &activateBroadcast,
+ 				sizeof (activateBroadcast)) != 0) {
+@@ -194,7 +194,7 @@ UDPCarrier* UDPCarrier::Create(string bi
+ 	}
+ 	if (bind(sock, (sockaddr *) & bindAddress, sizeof (sockaddr)) != 0) {
+ 		int err = LASTSOCKETERROR;
+-		FATAL("Unable to bind on address: udp://%s:%"PRIu16"; Error was: %d",
++		FATAL("Unable to bind on address: udp://%s:%" PRIu16 "; Error was: %d",
+ 				STR(bindIp), bindPort, err);
+ 		CLOSE_SOCKET(sock);
+ 		return NULL;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/baseprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/baseprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/baseprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/baseprotocol.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -40,7 +40,7 @@ BaseProtocol::BaseProtocol(uint64_t type
+ 	_gracefullyEnqueueForDelete = false;
+ 	_pApplication = NULL;
+ #ifdef LOG_CONSTRUCTOR_DESTRUCTOR
+-	FINEST("Protocol with id %"PRIu32" of type %s created; F: %p,N: %p, DF: %d, DN: %d",
++	FINEST("Protocol with id %" PRIu32 " of type %s created; F: %p,N: %p, DF: %d, DN: %d",
+ 			_id, STR(tagToString(_type)),
+ 			_pFarProtocol, _pNearProtocol, _deleteFar, _deleteNear);
+ #endif
+@@ -53,7 +53,7 @@ BaseProtocol::BaseProtocol(uint64_t type
+ 
+ BaseProtocol::~BaseProtocol() {
+ #ifdef LOG_CONSTRUCTOR_DESTRUCTOR
+-	FINEST("Protocol with id %"PRIu32"(%p) of type %s going to be deleted; F: %p,N: %p, DF: %d, DN: %d",
++	FINEST("Protocol with id %" PRIu32 "(%p) of type %s going to be deleted; F: %p,N: %p, DF: %d, DN: %d",
+ 			_id,
+ 			this,
+ 			STR(tagToString(_type)),
+@@ -80,7 +80,7 @@ BaseProtocol::~BaseProtocol() {
+ 		}
+ 	}
+ #ifdef LOG_CONSTRUCTOR_DESTRUCTOR
+-	FINEST("Protocol with id %"PRIu32"(%p) of type %s deleted; F: %p,N: %p, DF: %d, DN: %d",
++	FINEST("Protocol with id %" PRIu32 "(%p) of type %s deleted; F: %p,N: %p, DF: %d, DN: %d",
+ 			_id,
+ 			this,
+ 			STR(tagToString(_type)),
+@@ -123,7 +123,7 @@ void BaseProtocol::SetFarProtocol(BasePr
+ 		_pFarProtocol = pProtocol;
+ 		pProtocol->SetNearProtocol(this);
+ #ifdef LOG_CONSTRUCTOR_DESTRUCTOR
+-		FINEST("Protocol with id %"PRIu32" of type %s setted up; F: %p,N: %p, DF: %d, DN: %d",
++		FINEST("Protocol with id %" PRIu32 " of type %s setted up; F: %p,N: %p, DF: %d, DN: %d",
+ 				_id, STR(tagToString(_type)),
+ 				_pFarProtocol, _pNearProtocol, _deleteFar, _deleteNear);
+ #endif
+@@ -160,7 +160,7 @@ void BaseProtocol::SetNearProtocol(BaseP
+ 		_pNearProtocol = pProtocol;
+ 		pProtocol->SetFarProtocol(this);
+ #ifdef LOG_CONSTRUCTOR_DESTRUCTOR
+-		FINEST("Protocol with id %"PRIu32" of type %s setted up; F: %p,N: %p, DF: %d, DN: %d",
++		FINEST("Protocol with id %" PRIu32 " of type %s setted up; F: %p,N: %p, DF: %d, DN: %d",
+ 				_id, STR(tagToString(_type)),
+ 				_pFarProtocol, _pNearProtocol, _deleteFar, _deleteNear);
+ #endif
+@@ -272,7 +272,7 @@ BaseProtocol::operator string() {
+ 				result = format("A(%d) <-> ", pHandler->GetInboundFd());
+ 				break;
+ 			case IOHT_TCP_CARRIER:
+-				result = format("(Far: %s:%"PRIu16"; Near: %s:%"PRIu16") CTCP(%d) <-> ",
++				result = format("(Far: %s:%" PRIu16 "; Near: %s:%" PRIu16 ") CTCP(%d) <-> ",
+ 						STR(((TCPCarrier *) pHandler)->GetFarEndpointAddressIp()),
+ 						((TCPCarrier *) pHandler)->GetFarEndpointPort(),
+ 						STR(((TCPCarrier *) pHandler)->GetNearEndpointAddressIp()),
+@@ -280,7 +280,7 @@ BaseProtocol::operator string() {
+ 						pHandler->GetInboundFd());
+ 				break;
+ 			case IOHT_UDP_CARRIER:
+-				result = format("(Bound on: %s:%"PRIu16") CUDP(%d) <-> ",
++				result = format("(Bound on: %s:%" PRIu16 ") CUDP(%d) <-> ",
+ 						STR(((UDPCarrier *) pHandler)->GetNearEndpointAddress()),
+ 						((UDPCarrier *) pHandler)->GetNearEndpointPort(),
+ 						pHandler->GetInboundFd());
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/http/basehttpprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/http/basehttpprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/http/basehttpprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/http/basehttpprotocol.cpp	2018-12-03 00:36:44.065384113 +1100
+@@ -400,7 +400,7 @@ bool BaseHTTPProtocol::HandleChunkedCont
+ 		//8. Get its actual value and test it as well
+ 		chunkSize = strtol((char *) pBuffer, NULL, 16);
+ 		if (chunkSize > HTTP_MAX_CHUNK_SIZE) {
+-			FATAL("Chunk size too large. Maximum allowed is %"PRIu32" and we got %"PRIu32,
++			FATAL("Chunk size too large. Maximum allowed is %" PRIu32 " and we got %" PRIu32 ,
+ 					(uint32_t) HTTP_MAX_CHUNK_SIZE, chunkSize);
+ 			return false;
+ 		}
+@@ -436,12 +436,12 @@ bool BaseHTTPProtocol::HandleChunkedCont
+ 		}
+ 
+ 		//13. Ignore the bytes from the input buffer
+-		DEBUG_HTTP("available bytes before ignore: %"PRIu32, GETAVAILABLEBYTESCOUNT(buffer));
++		DEBUG_HTTP("available bytes before ignore: %" PRIu32 , GETAVAILABLEBYTESCOUNT(buffer));
+ 		//				if (GETAVAILABLEBYTESCOUNT(buffer) == ((uint32_t) chunkSizeSize - 2 + 2 + chunkSize + 2)) {
+ 		//					DEBUG_HTTP("%s", STR(buffer));
+ 		//				}
+ 		buffer.Ignore((uint32_t) chunkSizeSize - 2 + 2 + chunkSize + 2);
+-		DEBUG_HTTP("available bytes  after ignore: %"PRIu32, GETAVAILABLEBYTESCOUNT(buffer));
++		DEBUG_HTTP("available bytes  after ignore: %" PRIu32 , GETAVAILABLEBYTESCOUNT(buffer));
+ 
+ 		//14. reset the state if necessary
+ 		if (TransferCompleted()) {
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/http/httpauthhelper.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/http/httpauthhelper.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/http/httpauthhelper.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/http/httpauthhelper.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -279,7 +279,7 @@ bool HTTPAuthHelper::ParseAuthLine(strin
+ 			}
+ 			default:
+ 			{
+-				FATAL("Invalid stage: %"PRIu32, stage);
++				FATAL("Invalid stage: %" PRIu32 , stage);
+ 				return false;
+ 			}
+ 		}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/liveflv/inboundliveflvprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/liveflv/inboundliveflvprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/liveflv/inboundliveflvprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/liveflv/inboundliveflvprotocol.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -138,7 +138,7 @@ bool InboundLiveFLVProtocol::SignalInput
+ 				if (_pStream != NULL) {
+ 					uint32_t pts = dts + (ENTOHLP(GETIBPOINTER(buffer) + 2) >> 8);
+ #ifdef LIVEFLV_DUMP_PTSDTS
+-					FINEST("pts: %8.2f\tdts: %8.2f\tcts: %4"PRIu32"\tptsd: %+"PRId32"\tdtsd: %+"PRId32"\t%s",
++					FINEST("pts: %8.2f\tdts: %8.2f\tcts: %4" PRIu32 "\tptsd: %+" PRId32 "\tdtsd: %+" PRId32 "\t%s",
+ 							(double) pts, (double) dts,
+ 							pts - dts,
+ 							pts - lastPts, dts - lastDts,
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/protocolfactorymanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/protocolfactorymanager.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/protocolfactorymanager.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/protocolfactorymanager.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -53,7 +53,7 @@ bool ProtocolFactoryManager::RegisterPro
+ 
+ 	FOR_VECTOR(protocols, i) {
+ 		if (MAP_HAS1(_factoriesByProtocolId, protocols[i])) {
+-			FATAL("protocol %"PRIx64" already handled by factory %u", protocols[i],
++			FATAL("protocol %" PRIx64 " already handled by factory %u", protocols[i],
+ 					_factoriesByProtocolId[protocols[i]]->GetId());
+ 			return false;
+ 		}
+@@ -137,7 +137,7 @@ BaseProtocol *ProtocolFactoryManager::Cr
+ 
+ 	FOR_VECTOR(chain, i) {
+ 		if (!MAP_HAS1(_factoriesByProtocolId, chain[i])) {
+-			FATAL("protocol %"PRIx64" not handled by anyone", chain[i]);
++			FATAL("protocol %" PRIx64 " not handled by anyone", chain[i]);
+ 			return NULL;
+ 		}
+ 	}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/amf0serializer.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/amf0serializer.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/amf0serializer.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/amf0serializer.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -68,7 +68,7 @@ bool AMF0Serializer::ReadShortString(IOB
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_SHORT_STRING) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_SHORT_STRING, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -88,7 +88,7 @@ bool AMF0Serializer::ReadShortString(IOB
+ 	AMF_CHECK_BOUNDARIES(buffer, length);
+ 	variant = string((char *) (GETIBPOINTER(buffer)), length);
+ 	if (!buffer.Ignore(length)) {
+-		FATAL("Unable to ignore %"PRIu16" bytes", length);
++		FATAL("Unable to ignore %" PRIu16 " bytes", length);
+ 		return false;
+ 	}
+ 	return true;
+@@ -110,7 +110,7 @@ bool AMF0Serializer::ReadLongString(IOBu
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_LONG_STRING) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_LONG_STRING, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -131,7 +131,7 @@ bool AMF0Serializer::ReadLongString(IOBu
+ 	AMF_CHECK_BOUNDARIES(buffer, length);
+ 	variant = string((char *) (GETIBPOINTER(buffer)), length);
+ 	if (!buffer.Ignore(length)) {
+-		FATAL("Unable to ignore %"PRIu32" bytes", length);
++		FATAL("Unable to ignore %" PRIu32 " bytes", length);
+ 		return false;
+ 	}
+ 	return true;
+@@ -154,7 +154,7 @@ bool AMF0Serializer::ReadDouble(IOBuffer
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_NUMBER) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_NUMBER, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -193,7 +193,7 @@ bool AMF0Serializer::ReadObject(IOBuffer
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_OBJECT) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_OBJECT, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -255,7 +255,7 @@ bool AMF0Serializer::WriteObject(IOBuffe
+ 	FOR_MAP(temp, string, Variant, i) {
+ 		string key = MAP_KEY(i);
+ 		if ((key.length() == 10) && (key[0] == '0') && (key[1] == 'x')) {
+-			key = format("%"PRIu32, (uint32_t) strtol(key.c_str(), NULL, 16));
++			key = format("%" PRIu32 , (uint32_t) strtol(key.c_str(), NULL, 16));
+ 		}
+ 		if (!WriteShortString(buffer, key, false)) {
+ 			FATAL("Unable to serialize key");
+@@ -292,7 +292,7 @@ bool AMF0Serializer::ReadMixedArray(IOBu
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_MIXED_ARRAY) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_MIXED_ARRAY, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -384,7 +384,7 @@ bool AMF0Serializer::WriteMixedArray(IOB
+ 	FOR_MAP(temp, string, Variant, i) {
+ 		string key = MAP_KEY(i);
+ 		if ((key.length() == 10) && (key[0] == '0') && (key[1] == 'x')) {
+-			key = format("%"PRIu32, (uint32_t) strtol(key.c_str(), NULL, 16));
++			key = format("%" PRIu32 , (uint32_t) strtol(key.c_str(), NULL, 16));
+ 		}
+ 		if (!WriteShortString(buffer, key, false)) {
+ 			FATAL("Unable to serialize key");
+@@ -405,7 +405,7 @@ bool AMF0Serializer::ReadArray(IOBuffer
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_ARRAY) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_ARRAY, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -447,7 +447,7 @@ bool AMF0Serializer::ReadAMF3Object(IOBu
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_AMF3_OBJECT) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_AMF3_OBJECT, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -483,7 +483,7 @@ bool AMF0Serializer::ReadBoolean(IOBuffe
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_BOOLEAN) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_BOOLEAN, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -521,7 +521,7 @@ bool AMF0Serializer::ReadTimestamp(IOBuf
+ 	if (readType) {
+ 		AMF_CHECK_BOUNDARIES(buffer, 1);
+ 		if (GETIBPOINTER(buffer)[0] != AMF0_TIMESTAMP) {
+-			FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++			FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 					AMF0_TIMESTAMP, GETIBPOINTER(buffer)[0]);
+ 			return false;
+ 		}
+@@ -567,7 +567,7 @@ bool AMF0Serializer::WriteTimestamp(IOBu
+ bool AMF0Serializer::ReadNull(IOBuffer &buffer, Variant &variant) {
+ 	AMF_CHECK_BOUNDARIES(buffer, 1);
+ 	if (GETIBPOINTER(buffer)[0] != AMF0_NULL) {
+-		FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++		FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 				AMF0_NULL, GETIBPOINTER(buffer)[0]);
+ 		return false;
+ 	}
+@@ -590,7 +590,7 @@ bool AMF0Serializer::WriteNull(IOBuffer
+ bool AMF0Serializer::ReadUndefined(IOBuffer &buffer, Variant &variant) {
+ 	AMF_CHECK_BOUNDARIES(buffer, 1);
+ 	if (GETIBPOINTER(buffer)[0] != AMF0_UNDEFINED) {
+-		FATAL("AMF type not valid: want: %"PRIu8"; got: %"PRIu8,
++		FATAL("AMF type not valid: want: %" PRIu8 "; got: %" PRIu8 ,
+ 				AMF0_UNDEFINED, GETIBPOINTER(buffer)[0]);
+ 		return false;
+ 	}
+@@ -726,7 +726,7 @@ bool AMF0Serializer::Read(IOBuffer &buff
+ 		}
+ 		default:
+ 		{
+-			FATAL("Unable to de-serialize type %"PRIu8"; Buffer: %s",
++			FATAL("Unable to de-serialize type %" PRIu8 "; Buffer: %s",
+ 					GETIBPOINTER(buffer)[0], STR(buffer));
+ 			return false;
+ 		}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/basertmpappprotocolhandler.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/basertmpappprotocolhandler.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/basertmpappprotocolhandler.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/basertmpappprotocolhandler.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -578,8 +578,8 @@ bool BaseRTMPAppProtocolHandler::Process
+ 				bufferLen = bufferLen / 1000 + 1;
+ 			else
+ 				bufferLen = bufferLen / 1000;
+-			//			FINEST("streamId: %"PRIu32, streamId);
+-			//			FINEST("bufferLen: %"PRIu32, bufferLen);
++			//			FINEST("streamId: %" PRIu32 , streamId);
++			//			FINEST("bufferLen: %" PRIu32 , bufferLen);
+ 			BaseStream *pStream = pFrom->GetRTMPStream(streamId);
+ 			if (pStream == NULL) {
+ 				return true;
+@@ -906,7 +906,7 @@ bool BaseRTMPAppProtocolHandler::Process
+ 	map<uint32_t, BaseOutStream *> subscribedOutStreams =
+ 			GetApplication()->GetStreamsManager()->GetWaitingSubscribers(
+ 			streamName, pInNetRTMPStream->GetType(), true);
+-	//FINEST("subscribedOutStreams count: %"PRIz"u", subscribedOutStreams.size());
++	//FINEST("subscribedOutStreams count: %" PRIz "u", subscribedOutStreams.size());
+ 
+ 
+ 	//7. Bind the waiting subscribers
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/basertmpprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/basertmpprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/basertmpprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/basertmpprotocol.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -366,7 +366,7 @@ void BaseRTMPProtocol::GetStats(Variant
+ 
+ bool BaseRTMPProtocol::ResetChannel(uint32_t channelId) {
+ 	if (channelId >= MAX_CHANNELS_COUNT) {
+-		FATAL("Invalid channel id in reset message: %"PRIu32, channelId);
++		FATAL("Invalid channel id in reset message: %" PRIu32 , channelId);
+ 		return false;
+ 	}
+ 	_channels[channelId].Reset();
+@@ -488,7 +488,7 @@ void BaseRTMPProtocol::TrySetOutboundChu
+ 
+ BaseStream * BaseRTMPProtocol::GetRTMPStream(uint32_t rtmpStreamId) {
+ 	if (rtmpStreamId == 0 || rtmpStreamId >= MAX_STREAMS_COUNT) {
+-		//WARN("Invalid stream id: %"PRIu32, rtmpStreamId);
++		//WARN("Invalid stream id: %" PRIu32 , rtmpStreamId);
+ 		return NULL;
+ 	}
+ 	return _streams[rtmpStreamId];
+@@ -636,7 +636,7 @@ BaseOutNetRTMPStream * BaseRTMPProtocol:
+ 	}
+ 
+ 	if (_streams[streamId]->GetType() != ST_NEUTRAL_RTMP) {
+-		FATAL("Try to play a stream over a non neutral stream: id: %u; type: %"PRIu64,
++		FATAL("Try to play a stream over a non neutral stream: id: %u; type: %" PRIu64 ,
+ 				streamId, _streams[streamId]->GetType());
+ 		return NULL;
+ 	}
+@@ -900,7 +900,7 @@ bool BaseRTMPProtocol::ProcessBytes(IOBu
+ 				case RM_HEADER_MESSAGETYPE_VIDEODATA:
+ 				{
+ 					if (H_SI(header) >= MAX_STREAMS_COUNT) {
+-						FATAL("The server doesn't support stream ids bigger than %"PRIu32,
++						FATAL("The server doesn't support stream ids bigger than %" PRIu32 ,
+ 								(uint32_t) MAX_STREAMS_COUNT);
+ 						return false;
+ 					}
+@@ -946,7 +946,7 @@ bool BaseRTMPProtocol::ProcessBytes(IOBu
+ 				case RM_HEADER_MESSAGETYPE_AUDIODATA:
+ 				{
+ 					if (H_SI(header) >= MAX_STREAMS_COUNT) {
+-						FATAL("The server doesn't support stream ids bigger than %"PRIu32,
++						FATAL("The server doesn't support stream ids bigger than %" PRIu32 ,
+ 								(uint32_t) MAX_STREAMS_COUNT);
+ 						return false;
+ 					}
+@@ -993,7 +993,7 @@ bool BaseRTMPProtocol::ProcessBytes(IOBu
+ 				case RM_HEADER_MESSAGETYPE_AGGREGATE:
+ 				{
+ 					if (H_SI(header) >= MAX_STREAMS_COUNT) {
+-						FATAL("The server doesn't support stream ids bigger than %"PRIu32,
++						FATAL("The server doesn't support stream ids bigger than %" PRIu32 ,
+ 								(uint32_t) MAX_STREAMS_COUNT);
+ 						return false;
+ 					}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/header_le_ba.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/header_le_ba.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/header_le_ba.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/header_le_ba.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -346,7 +346,7 @@ bool Header::Write(IOBuffer &buffer) {
+ }
+ 
+ Header::operator string() {
+-	return format("(RC: %"PRIu8"; HT: %"PRIu8"; CI: %02"PRIu32"; T: % 9"PRIu32"; L: % 6"PRIu32"; MT: % 2"PRIu8"; SI: % 2"PRIu32"; IA: %"PRIu8")",
++	return format("(RC: %" PRIu8 "; HT: %" PRIu8 "; CI: %02" PRIu32 "; T: % 9" PRIu32 "; L: % 6" PRIu32 "; MT: % 2" PRIu8 "; SI: % 2" PRIu32 "; IA: %" PRIu8 ")",
+ 			readCompleted, ht, ci, hf.s.ts, hf.s.ml, hf.s.mt, hf.s.si, isAbsolute);
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/inboundrtmpprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/inboundrtmpprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/inboundrtmpprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/inboundrtmpprotocol.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -139,11 +139,11 @@ bool InboundRTMPProtocol::ValidateClient
+ }
+ 
+ bool InboundRTMPProtocol::ValidateClientScheme(IOBuffer &inputBuffer, uint8_t scheme) {
+-	DEBUG_HANDSHAKE("SERVER: Validate: 1. _usedScheme %"PRIu8, scheme);
++	DEBUG_HANDSHAKE("SERVER: Validate: 1. _usedScheme %" PRIu8 , scheme);
+ 	uint8_t *pBuffer = GETIBPOINTER(inputBuffer);
+ 
+ 	uint32_t clientDigestOffset = GetDigestOffset(pBuffer, scheme);
+-	DEBUG_HANDSHAKE("SERVER: Validate: 2. clientDigestOffset %"PRIu32"; _usedScheme: %"PRIu8, clientDigestOffset, scheme);
++	DEBUG_HANDSHAKE("SERVER: Validate: 2. clientDigestOffset %" PRIu32 "; _usedScheme: %" PRIu8 , clientDigestOffset, scheme);
+ 
+ 	uint8_t *pTempBuffer = new uint8_t[1536 - 32];
+ 	memcpy(pTempBuffer, pBuffer, clientDigestOffset);
+@@ -245,7 +245,7 @@ bool InboundRTMPProtocol::PerformComplex
+ 	//compute DH key position
+ 	uint32_t serverDHOffset = GetDHOffset(_pOutputBuffer, _usedScheme);
+ 	uint32_t clientDHOffset = GetDHOffset(pInputBuffer, _usedScheme);
+-	DEBUG_HANDSHAKE("SERVER: 1. serverDHOffset: %"PRIu32"; clientDHOffset: %"PRIu32"; _usedScheme: %"PRIu8,
++	DEBUG_HANDSHAKE("SERVER: 1. serverDHOffset: %" PRIu32 "; clientDHOffset: %" PRIu32 "; _usedScheme: %" PRIu8 ,
+ 			serverDHOffset, clientDHOffset, _usedScheme);
+ 
+ 	//generate DH key
+@@ -256,7 +256,7 @@ bool InboundRTMPProtocol::PerformComplex
+ 		return false;
+ 	}
+ 
+-	DEBUG_HANDSHAKE("SERVER: 2. clientDHOffset: %"PRIu32"; _usedScheme: %"PRIu8"; clientPublicKey: %s",
++	DEBUG_HANDSHAKE("SERVER: 2. clientDHOffset: %" PRIu32 "; _usedScheme: %" PRIu8 "; clientPublicKey: %s",
+ 			clientDHOffset,
+ 			_usedScheme,
+ 			STR(hex(pInputBuffer + clientDHOffset, 128)));
+@@ -269,7 +269,7 @@ bool InboundRTMPProtocol::PerformComplex
+ 		FATAL("Couldn't write public key!");
+ 		return false;
+ 	}
+-	DEBUG_HANDSHAKE("SERVER: 3. serverDHOffset: %"PRIu32"; serverPublicKey: %s",
++	DEBUG_HANDSHAKE("SERVER: 3. serverDHOffset: %" PRIu32 "; serverPublicKey: %s",
+ 			serverDHOffset,
+ 			STR(hex(_pOutputBuffer + serverDHOffset, 128)));
+ 
+@@ -309,7 +309,7 @@ bool InboundRTMPProtocol::PerformComplex
+ 
+ 	//put the digest in place
+ 	memcpy(_pOutputBuffer + serverDigestOffset, pTempHash, 32);
+-	DEBUG_HANDSHAKE("SERVER: 5. serverDigestOffset: %"PRIu32"; _usedScheme: %"PRIu8"; serverDigest: %s",
++	DEBUG_HANDSHAKE("SERVER: 5. serverDigestOffset: %" PRIu32 "; _usedScheme: %" PRIu8 "; serverDigest: %s",
+ 			serverDigestOffset, _usedScheme,
+ 			STR(hex(pTempHash, 32)));
+ 
+@@ -321,7 +321,7 @@ bool InboundRTMPProtocol::PerformComplex
+ 	//**** SECOND 1536 bytes from server response ****//
+ 	//Compute the chalange index from the initial client request
+ 	uint32_t clientDigestOffset = GetDigestOffset(pInputBuffer, _usedScheme);
+-	DEBUG_HANDSHAKE("SERVER: 6. clientDigestOffset: %"PRIu32"; _usedScheme: %"PRIu8, clientDigestOffset, _usedScheme);
++	DEBUG_HANDSHAKE("SERVER: 6. clientDigestOffset: %" PRIu32 "; _usedScheme: %" PRIu8 , clientDigestOffset, _usedScheme);
+ 
+ 	//compute the key
+ 	pTempHash = new uint8_t[512];
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/monitorrtmpprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/monitorrtmpprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/monitorrtmpprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/monitorrtmpprotocol.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -278,7 +278,7 @@ bool MonitorRTMPProtocol::ProcessBytes(I
+ 						if ((uint8_t) VH_MT(msg) == RM_HEADER_MESSAGETYPE_ABORTMESSAGE) {
+ 							uint32_t channelId = (uint32_t) msg[RM_ABORTMESSAGE];
+ 							if (channelId >= _maxChannelsCount) {
+-								FATAL("Invalid channel id in reset message: %"PRIu32, channelId);
++								FATAL("Invalid channel id in reset message: %" PRIu32 , channelId);
+ 								return false;
+ 							}
+ 							o_assert(_channels[channelId].id == channelId);
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/outboundrtmpprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/outboundrtmpprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/outboundrtmpprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/outboundrtmpprotocol.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -210,7 +210,7 @@ bool OutboundRTMPProtocol::PerformHandsh
+ 		FATAL("Couldn't write public key!");
+ 		return false;
+ 	}
+-	DEBUG_HANDSHAKE("CLIENT: 1. clientDHOffset: %"PRIu32"; _usedScheme: %"PRIu8"; clientPublicKey: %s",
++	DEBUG_HANDSHAKE("CLIENT: 1. clientDHOffset: %" PRIu32 "; _usedScheme: %" PRIu8 "; clientPublicKey: %s",
+ 			clientDHOffset,
+ 			_usedScheme,
+ 			STR(hex(_pOutputBuffer + clientDHOffset, 128)));
+@@ -229,7 +229,7 @@ bool OutboundRTMPProtocol::PerformHandsh
+ 	HMACsha256(pTempBuffer, 1536 - 32, genuineFPKey, 30, pTempHash);
+ 
+ 	memcpy(_pOutputBuffer + clientDigestOffset, pTempHash, 32);
+-	DEBUG_HANDSHAKE("CLIENT: 2. clientDigestOffset: %"PRIu32"; _usedScheme: %"PRIu8"; clientDigest: %s",
++	DEBUG_HANDSHAKE("CLIENT: 2. clientDigestOffset: %" PRIu32 "; _usedScheme: %" PRIu8 "; clientDigest: %s",
+ 			clientDigestOffset, _usedScheme,
+ 			STR(hex(_pOutputBuffer + clientDigestOffset, 32)));
+ 	_pClientDigest = new uint8_t[32];
+@@ -260,7 +260,7 @@ bool OutboundRTMPProtocol::VerifyServer(
+ 	uint8_t *pBuffer = GETIBPOINTER(inputBuffer) + 1;
+ 
+ 	uint32_t serverDigestOffset = GetDigestOffset(pBuffer, _usedScheme);
+-	DEBUG_HANDSHAKE("CLIENT: Validate: 1. serverDigestOffset: %"PRIu32"; _usedScheme: %"PRIu8,
++	DEBUG_HANDSHAKE("CLIENT: Validate: 1. serverDigestOffset: %" PRIu32 "; _usedScheme: %" PRIu8 ,
+ 			serverDigestOffset, _usedScheme);
+ 
+ 	uint8_t *pTempBuffer = new uint8_t[1536 - 32];
+@@ -323,7 +323,7 @@ bool OutboundRTMPProtocol::PerformHandsh
+ 		return false;
+ 	}
+ 
+-	DEBUG_HANDSHAKE("CLIENT: 1. serverDHOffset: %"PRIu32"; _usedScheme: %"PRIu8"; serverPublicKey: %s",
++	DEBUG_HANDSHAKE("CLIENT: 1. serverDHOffset: %" PRIu32 "; _usedScheme: %" PRIu8 "; serverPublicKey: %s",
+ 			serverDHOffset,
+ 			_usedScheme,
+ 			STR(hex(pInputBuffer + serverDHOffset, 128)));
+@@ -359,7 +359,7 @@ bool OutboundRTMPProtocol::PerformHandsh
+ 	_pDHWrapper = NULL;
+ 
+ 	uint32_t serverDigestOffset = GetDigestOffset(pInputBuffer, _usedScheme);
+-	DEBUG_HANDSHAKE("CLIENT: 3. serverDigestOffset: %"PRIu32"; _usedScheme: %"PRIu8, serverDigestOffset, _usedScheme);
++	DEBUG_HANDSHAKE("CLIENT: 3. serverDigestOffset: %" PRIu32 "; _usedScheme: %" PRIu8 , serverDigestOffset, _usedScheme);
+ 
+ 	if (_pOutputBuffer == NULL) {
+ 		_pOutputBuffer = new uint8_t[1536];
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/rtmpoutputchecks.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/rtmpoutputchecks.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/rtmpoutputchecks.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/rtmpoutputchecks.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -278,7 +278,7 @@ bool RTMPOutputChecks::ProcessBytes(IOBu
+ 						if ((uint8_t) VH_MT(msg) == RM_HEADER_MESSAGETYPE_ABORTMESSAGE) {
+ 							uint32_t channelId = (uint32_t) msg[RM_ABORTMESSAGE];
+ 							if (channelId >= _maxChannelsCount) {
+-								FATAL("Invalid channel id in reset message: %"PRIu32, channelId);
++								FATAL("Invalid channel id in reset message: %" PRIu32 , channelId);
+ 								return false;
+ 							}
+ 							o_assert(_channels[channelId].id == channelId);
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/rtmpprotocolserializer.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/rtmpprotocolserializer.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/rtmpprotocolserializer.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/rtmpprotocolserializer.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -732,7 +732,7 @@ bool RTMPProtocolSerializer::Deserialize
+ 		Variant &message) {
+ 	AMF_CHECK_BOUNDARIES(buffer, 1);
+ 	if (GETIBPOINTER(buffer)[0] != 0) {
+-		FATAL("Encoding %"PRIu8" not supported yet", GETIBPOINTER(buffer)[0]);
++		FATAL("Encoding %" PRIu8 " not supported yet", GETIBPOINTER(buffer)[0]);
+ 		return false;
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/baseoutnetrtmpstream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/baseoutnetrtmpstream.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/baseoutnetrtmpstream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/baseoutnetrtmpstream.cpp	2018-12-03 00:36:44.069384113 +1100
+@@ -68,7 +68,7 @@ BaseOutNetRTMPStream::BaseOutNetRTMPStre
+ 	_audioCurrentFrameDropped = false;
+ 	_videoCurrentFrameDropped = false;
+ 	_attachedStreamType = 0;
+-	_clientId = format("%d_%d_%"PRIz"u", _pProtocol->GetId(), _rtmpStreamId, (size_t)this);
++	_clientId = format("%d_%d_%" PRIz "u", _pProtocol->GetId(), _rtmpStreamId, (size_t)this);
+ 
+ 	_paused = false;
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/infilertmpstream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/infilertmpstream.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/infilertmpstream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/infilertmpstream.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -75,12 +75,12 @@ bool InFileRTMPStream::AVCBuilder::Build
+ 	}
+ 
+ 	if (!pFile->SeekTo(mediaFrame.start)) {
+-		FATAL("Unable to seek to position %"PRIu64, mediaFrame.start);
++		FATAL("Unable to seek to position %" PRIu64 , mediaFrame.start);
+ 		return false;
+ 	}
+ 
+ 	if (!buffer.ReadFromFs(*pFile, (uint32_t) mediaFrame.length)) {
+-		FATAL("Unable to read %"PRIu64" bytes from offset %"PRIu64, mediaFrame.length, mediaFrame.start);
++		FATAL("Unable to read %" PRIu64 " bytes from offset %" PRIu64 , mediaFrame.length, mediaFrame.start);
+ 		return false;
+ 	}
+ 
+@@ -108,13 +108,13 @@ bool InFileRTMPStream::AACBuilder::Build
+ 
+ 	//2. Seek into the data file at the correct position
+ 	if (!pFile->SeekTo(mediaFrame.start)) {
+-		FATAL("Unable to seek to position %"PRIu64, mediaFrame.start);
++		FATAL("Unable to seek to position %" PRIu64 , mediaFrame.start);
+ 		return false;
+ 	}
+ 
+ 	//3. Read the data
+ 	if (!buffer.ReadFromFs(*pFile, (uint32_t) mediaFrame.length)) {
+-		FATAL("Unable to read %"PRIu64" bytes from offset %"PRIu64, mediaFrame.length, mediaFrame.start);
++		FATAL("Unable to read %" PRIu64 " bytes from offset %" PRIu64 , mediaFrame.length, mediaFrame.start);
+ 		return false;
+ 	}
+ 
+@@ -135,13 +135,13 @@ bool InFileRTMPStream::MP3Builder::Build
+ 
+ 	//2. Seek into the data file at the correct position
+ 	if (!pFile->SeekTo(mediaFrame.start)) {
+-		FATAL("Unable to seek to position %"PRIu64, mediaFrame.start);
++		FATAL("Unable to seek to position %" PRIu64 , mediaFrame.start);
+ 		return false;
+ 	}
+ 
+ 	//3. Read the data
+ 	if (!buffer.ReadFromFs(*pFile, (uint32_t) mediaFrame.length)) {
+-		FATAL("Unable to read %"PRIu64" bytes from offset %"PRIu64, mediaFrame.length, mediaFrame.start);
++		FATAL("Unable to read %" PRIu64 " bytes from offset %" PRIu64 , mediaFrame.length, mediaFrame.start);
+ 		return false;
+ 	}
+ 
+@@ -160,13 +160,13 @@ bool InFileRTMPStream::PassThroughBuilde
+ 		MediaFrame &mediaFrame, IOBuffer &buffer) {
+ 	//1. Seek into the data file at the correct position
+ 	if (!pFile->SeekTo(mediaFrame.start)) {
+-		FATAL("Unable to seek to position %"PRIu64, mediaFrame.start);
++		FATAL("Unable to seek to position %" PRIu64 , mediaFrame.start);
+ 		return false;
+ 	}
+ 
+ 	//2. Read the data
+ 	if (!buffer.ReadFromFs(*pFile, (uint32_t) mediaFrame.length)) {
+-		FATAL("Unable to read %"PRIu64" bytes from offset %"PRIu64, mediaFrame.length, mediaFrame.start);
++		FATAL("Unable to read %" PRIu64 " bytes from offset %" PRIu64 , mediaFrame.length, mediaFrame.start);
+ 		return false;
+ 	}
+ 
+@@ -332,14 +332,14 @@ bool InFileRTMPStream::FeedMetaData(Medi
+ 		return true;
+ 	//1. Seek into the data file at the correct position
+ 	if (!pFile->SeekTo(mediaFrame.start)) {
+-		FATAL("Unable to seek to position %"PRIu64, mediaFrame.start);
++		FATAL("Unable to seek to position %" PRIu64 , mediaFrame.start);
+ 		return false;
+ 	}
+ 
+ 	//2. Read the data
+ 	_metadataBuffer.IgnoreAll();
+ 	if (!_metadataBuffer.ReadFromFs(*pFile, (uint32_t) mediaFrame.length)) {
+-		FATAL("Unable to read %"PRIu64" bytes from offset %"PRIu64, mediaFrame.length, mediaFrame.start);
++		FATAL("Unable to read %" PRIu64 " bytes from offset %" PRIu64 , mediaFrame.length, mediaFrame.start);
+ 		return false;
+ 	}
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/innetrtmpstream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/innetrtmpstream.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtmp/streaming/innetrtmpstream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtmp/streaming/innetrtmpstream.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -35,7 +35,7 @@ InNetRTMPStream::InNetRTMPStream(BasePro
+ 	_rtmpStreamId = rtmpStreamId;
+ 	_chunkSize = chunkSize;
+ 	_channelId = channelId;
+-	_clientId = format("%d_%d_%"PRIz"u", _pProtocol->GetId(), _rtmpStreamId, (size_t)this);
++	_clientId = format("%d_%d_%" PRIz "u", _pProtocol->GetId(), _rtmpStreamId, (size_t)this);
+ 	_videoCts = 0;
+ 
+ 	_dummy = false;
+@@ -418,7 +418,7 @@ bool InNetRTMPStream::InitializeAudioCap
+ 		case 14: //MP3 8-Khz
+ 		case 15: //Device-specific sound
+ 		{
+-			WARN("RTMP input audio codec %"PRIu8" defaulted to pass through", (uint8_t) (pData[0] >> 4));
++			WARN("RTMP input audio codec %" PRIu8 " defaulted to pass through", (uint8_t) (pData[0] >> 4));
+ 			pCodecInfo = streamCapabilities.AddTrackAudioPassThrough(pStream);
+ 			if (pCodecInfo == NULL) {
+ 				FATAL("Unable to parse pass-through codec setup bytes for input RTMP stream");
+@@ -515,7 +515,7 @@ bool InNetRTMPStream::InitializeAudioCap
+ 				return false;
+ 			}
+ 			if (pData[1] != 0) {
+-				WARN("stream: %s; this is not an AAC codec setup request. Ignore it: %02"PRIx8"%02"PRIx8,
++				WARN("stream: %s; this is not an AAC codec setup request. Ignore it: %02" PRIx8 "%02" PRIx8 ,
+ 						(pStream != NULL) ? (STR(pStream->GetName())) : "",
+ 						pData[0], pData[1]);
+ 				return true;
+@@ -532,7 +532,7 @@ bool InNetRTMPStream::InitializeAudioCap
+ 		case 9: //reserved
+ 		default:
+ 		{
+-			FATAL("Invalid audio codec ID %"PRIu32" detected on an input RTMP stream",
++			FATAL("Invalid audio codec ID %" PRIu32 " detected on an input RTMP stream",
+ 					pData[0] >> 4);
+ 			return false;
+ 		}
+@@ -557,7 +557,7 @@ bool InNetRTMPStream::InitializeVideoCap
+ 		case 5: //On2 VP6 with alpha channel
+ 		case 6: //Screen video version 2
+ 		{
+-			WARN("RTMP input video codec %"PRIu8" defaulted to pass through", (uint8_t) (pData[0]&0x0f));
++			WARN("RTMP input video codec %" PRIu8 " defaulted to pass through", (uint8_t) (pData[0]&0x0f));
+ 			pCodecInfo = streamCapabilities.AddTrackVideoPassThrough(pStream);
+ 			if (pCodecInfo == NULL) {
+ 				FATAL("Unable to parse pass-through codec setup bytes for input RTMP stream");
+@@ -573,7 +573,7 @@ bool InNetRTMPStream::InitializeVideoCap
+ 			//3 - format2
+ 			//2*8 or 2*16 - width/height depending on the format2
+ 			if (length < 11) {
+-				FATAL("Not enough data to initialize Sorenson H.263 for an input RTMP stream. Wanted: %"PRIu32"; Got: %"PRIu32,
++				FATAL("Not enough data to initialize Sorenson H.263 for an input RTMP stream. Wanted: %" PRIu32 "; Got: %" PRIu32 ,
+ 						(uint32_t) (11), length);
+ 				return false;
+ 			}
+@@ -589,7 +589,7 @@ bool InNetRTMPStream::InitializeVideoCap
+ 		case 4: //On2 VP6
+ 		{
+ 			if (length < 7) {
+-				FATAL("Not enough data to initialize On2 VP6 codec for an input RTMP stream. Wanted: %"PRIu32"; Got: %"PRIu32,
++				FATAL("Not enough data to initialize On2 VP6 codec for an input RTMP stream. Wanted: %" PRIu32 "; Got: %" PRIu32 ,
+ 						(uint32_t) (7), length);
+ 				return false;
+ 			}
+@@ -614,25 +614,25 @@ bool InNetRTMPStream::InitializeVideoCap
+ 			 * <pps> - pps data
+ 			 */
+ 			if (length < 11 + 2) {
+-				FATAL("Not enough data to initialize AVC codec for an input RTMP stream. Wanted: %"PRIu32"; Got: %"PRIu32,
++				FATAL("Not enough data to initialize AVC codec for an input RTMP stream. Wanted: %" PRIu32 "; Got: %" PRIu32 ,
+ 						(uint32_t) (11 + 2), length);
+ 				return false;
+ 			}
+ 			if (((pData[0] >> 4) != 1) || (pData[1] != 0)) {
+-				WARN("stream: %s; this is not a key frame or not a H264 codec setup request. Ignore it: %02"PRIx8"%02"PRIx8,
++				WARN("stream: %s; this is not a key frame or not a H264 codec setup request. Ignore it: %02" PRIx8 "%02" PRIx8 ,
+ 						(pStream != NULL) ? (STR(pStream->GetName())) : "",
+ 						pData[0], pData[1]);
+ 				return true;
+ 			}
+ 			uint32_t spsLength = ENTOHSP(pData + 11);
+ 			if (length < 11 + 2 + spsLength + 1 + 2) {
+-				FATAL("Not enough data to initialize AVC codec for an input RTMP stream. Wanted: %"PRIu32"; Got: %"PRIu32,
++				FATAL("Not enough data to initialize AVC codec for an input RTMP stream. Wanted: %" PRIu32 "; Got: %" PRIu32 ,
+ 						11 + 2 + spsLength + 1 + 2, length);
+ 				return false;
+ 			}
+ 			uint32_t ppsLength = ENTOHSP(pData + 11 + 2 + spsLength + 1);
+ 			if (length < 11 + 2 + spsLength + 1 + 2 + ppsLength) {
+-				FATAL("Invalid AVC codec packet length for an input RTMP stream. Wanted: %"PRIu32"; Got: %"PRIu32,
++				FATAL("Invalid AVC codec packet length for an input RTMP stream. Wanted: %" PRIu32 "; Got: %" PRIu32 ,
+ 						11 + 2 + spsLength + 1 + 2 + ppsLength, length);
+ 				return false;
+ 			}
+@@ -648,7 +648,7 @@ bool InNetRTMPStream::InitializeVideoCap
+ 		}
+ 		default:
+ 		{
+-			FATAL("Invalid audio codec ID %"PRIu32" detected on an input RTMP stream:",
++			FATAL("Invalid audio codec ID %" PRIu32 " detected on an input RTMP stream:",
+ 					pData[0]&0x0f);
+ 			return false;
+ 		}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/basertspappprotocolhandler.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/basertspappprotocolhandler.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/basertspappprotocolhandler.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/basertspappprotocolhandler.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -195,7 +195,7 @@ bool BaseRTSPAppProtocolHandler::PullExt
+ 	//3. Connect
+ 	if (!TCPConnector<BaseRTSPAppProtocolHandler>::Connect(ip, port, chain,
+ 			customParameters)) {
+-		FATAL("Unable to connect to %s:%"PRIu16, STR(ip), port);
++		FATAL("Unable to connect to %s:%" PRIu16 , STR(ip), port);
+ 		return false;
+ 	}
+ 
+@@ -286,7 +286,7 @@ bool BaseRTSPAppProtocolHandler::PushLoc
+ 	//7. Connect
+ 	if (!TCPConnector<BaseRTSPAppProtocolHandler>::Connect(ip, port, chain,
+ 			customParameters)) {
+-		FATAL("Unable to connect to %s:%"PRIu16, STR(ip), port);
++		FATAL("Unable to connect to %s:%" PRIu16 , STR(ip), port);
+ 		return false;
+ 	}
+ 
+@@ -684,7 +684,7 @@ bool BaseRTSPAppProtocolHandler::HandleR
+ 			forceTcp = true;
+ 			transport = temp;
+ 			uint16_t channel = (uint16_t) customParams["nextChannel"];
+-			transport["interleaved"]["all"] = format("%"PRIu16"-%"PRIu16, channel, channel + 1);
++			transport["interleaved"]["all"] = format("%" PRIu16 "-%" PRIu16 , channel, channel + 1);
+ 			transport["interleaved"]["data"] = (uint16_t) channel;
+ 			transport["interleaved"]["rtcp"] = (uint16_t) (channel + 1);
+ 			customParams["nextChannel"] = (uint16_t) (channel + 2);
+@@ -1564,8 +1564,8 @@ bool BaseRTSPAppProtocolHandler::HandleR
+ 			rangeEnd = -1;
+ 		}
+ 		string range = format("npt=%s-%s",
+-				(rangeStart < 0) ? "now" : STR(format("%"PRId64, rangeStart)),
+-				(rangeEnd < 0) ? "" : STR(format("%"PRId64, rangeEnd)));
++				(rangeStart < 0) ? "now" : STR(format("%" PRId64 , rangeStart)),
++				(rangeEnd < 0) ? "" : STR(format("%" PRId64 , rangeEnd)));
+ 
+ 		//3. prepare the play command
+ 		pFrom->PushRequestFirstLine(RTSP_METHOD_PLAY, uri, RTSP_VERSION_1_0);
+@@ -1863,7 +1863,7 @@ void BaseRTSPAppProtocolHandler::Compute
+ 				: (uint16_t) pOutboundConnectivity->GetLastVideoSequence();
+ 		if (rtpInfo != "")
+ 			rtpInfo += ",";
+-		rtpInfo += format("url=%s;seq=%"PRIu16";rtptime=%"PRIu32,
++		rtpInfo += format("url=%s;seq=%" PRIu16 ";rtptime=%" PRIu32 ,
+ 				STR(MAP_VAL(i)["url"]),
+ 				sequence,
+ 				rtpTime
+@@ -2096,7 +2096,7 @@ string BaseRTSPAppProtocolHandler::GetAu
+ 		}
+ 		result += "m=audio 0 RTP/AVP 96\r\n";
+ 		result += "a=recvonly\r\n";
+-		result += format("a=rtpmap:96 mpeg4-generic/%"PRIu32"/2\r\n",
++		result += format("a=rtpmap:96 mpeg4-generic/%" PRIu32 "/2\r\n",
+ 				pInfo->_samplingRate);
+ 		pFrom->GetCustomParameters()["rtpInfo"]["audio"]["frequency"] = (uint32_t) pInfo->_samplingRate;
+ 		//FINEST("result: %s", STR(result));
+@@ -2127,7 +2127,7 @@ string BaseRTSPAppProtocolHandler::GetVi
+ 		result += "a=recvonly\r\n";
+ 		result += "a=control:trackID="
+ 				+ (string) pFrom->GetCustomParameters()["videoTrackId"] + "\r\n";
+-		result += format("a=rtpmap:97 H264/%"PRIu32"\r\n", pInfo->_samplingRate);
++		result += format("a=rtpmap:97 H264/%" PRIu32 "\r\n", pInfo->_samplingRate);
+ 		pFrom->GetCustomParameters()["rtpInfo"]["video"]["frequency"] = (uint32_t) pInfo->_samplingRate;
+ 		result += "a=fmtp:97 profile-level-id=";
+ 		result += hex(pInfo->_pSPS + 1, 3);
+@@ -2290,7 +2290,7 @@ string BaseRTSPAppProtocolHandler::Compu
+ 	//3. Prepare the body of the response
+ 	string result = "";
+ 	result += "v=0\r\n";
+-	result += format("o=- %"PRIu32" 0 IN IP4 %s\r\n", pFrom->GetId(), STR(nearAddress));
++	result += format("o=- %" PRIu32 " 0 IN IP4 %s\r\n", pFrom->GetId(), STR(nearAddress));
+ 	result += "s=" + targetStreamName + "\r\n";
+ 	result += "u="BRANDING_WEB"\r\n";
+ 	result += "e="BRANDING_EMAIL"\r\n";
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/connectivity/inboundconnectivity.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/connectivity/inboundconnectivity.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/connectivity/inboundconnectivity.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/connectivity/inboundconnectivity.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -249,7 +249,7 @@ bool InboundConnectivity::Initialize() {
+ 	map<uint32_t, BaseOutStream *> subscribedOutStreams =
+ 			pApplication->GetStreamsManager()->GetWaitingSubscribers(
+ 			_streamName, _pInStream->GetType(), true);
+-	//FINEST("subscribedOutStreams count: %"PRIz"u", subscribedOutStreams.size());
++	//FINEST("subscribedOutStreams count: %" PRIz "u", subscribedOutStreams.size());
+ 
+ 
+ 	//8. Bind the waiting subscribers
+@@ -283,11 +283,11 @@ string InboundConnectivity::GetTransport
+ 			return "";
+ 		}
+ 		if (isClient) {
+-			return format("RTP/AVP;unicast;client_port=%"PRIu16"-%"PRIu16,
++			return format("RTP/AVP;unicast;client_port=%" PRIu16 "-%" PRIu16 ,
+ 					((UDPCarrier *) pRTP->GetIOHandler())->GetNearEndpointPort(),
+ 					((UDPCarrier *) pRTCP->GetIOHandler())->GetNearEndpointPort());
+ 		} else {
+-			return format("RTP/AVP;unicast;client_port=%s;server_port=%"PRIu16"-%"PRIu16,
++			return format("RTP/AVP;unicast;client_port=%s;server_port=%" PRIu16 "-%" PRIu16 ,
+ 					STR(track["portsOrChannels"]["all"]),
+ 					((UDPCarrier *) pRTP->GetIOHandler())->GetNearEndpointPort(),
+ 					((UDPCarrier *) pRTCP->GetIOHandler())->GetNearEndpointPort());
+@@ -325,7 +325,7 @@ string InboundConnectivity::GetClientPor
+ 			isAudio ? _rtcpAudioId : _rtcpVideoId);
+ 	if ((pRTP == NULL) || (pRTCP == NULL))
+ 		return "";
+-	return format("%"PRIu16"-%"PRIu16,
++	return format("%" PRIu16 "-%" PRIu16 ,
+ 			((UDPCarrier *) pRTP->GetIOHandler())->GetNearEndpointPort(),
+ 			((UDPCarrier *) pRTCP->GetIOHandler())->GetNearEndpointPort());
+ }
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/connectivity/outboundconnectivity.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/connectivity/outboundconnectivity.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/connectivity/outboundconnectivity.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/connectivity/outboundconnectivity.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -135,20 +135,20 @@ void OutboundConnectivity::SetOutStream(
+ }
+ 
+ string OutboundConnectivity::GetVideoPorts() {
+-	return format("%"PRIu16"-%"PRIu16, _videoDataPort, _videoRTCPPort);
++	return format("%" PRIu16 "-%" PRIu16 , _videoDataPort, _videoRTCPPort);
+ }
+ 
+ string OutboundConnectivity::GetAudioPorts() {
+-	return format("%"PRIu16"-%"PRIu16, _audioDataPort, _audioRTCPPort);
++	return format("%" PRIu16 "-%" PRIu16 , _audioDataPort, _audioRTCPPort);
+ }
+ 
+ string OutboundConnectivity::GetVideoChannels() {
+-	return format("%"PRIu8"-%"PRIu8, _rtpClient.videoDataChannel,
++	return format("%" PRIu8 "-%" PRIu8 , _rtpClient.videoDataChannel,
+ 			_rtpClient.videoRtcpChannel);
+ }
+ 
+ string OutboundConnectivity::GetAudioChannels() {
+-	return format("%"PRIu8"-%"PRIu8, _rtpClient.audioDataChannel,
++	return format("%" PRIu8 "-%" PRIu8 , _rtpClient.audioDataChannel,
+ 			_rtpClient.audioRtcpChannel);
+ }
+ 
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/nattraversalprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/nattraversalprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/nattraversalprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/nattraversalprotocol.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -61,11 +61,11 @@ bool NATTraversalProtocol::SignalInputDa
+ 	}
+ 	//string ipAddress = inet_ntoa(_pOutboundAddress->sin_addr);
+ 	//	if (_pOutboundAddress->sin_port == pPeerAddress->sin_port) {
+-	//		FINEST("The client has public endpoint: %s:%"PRIu16,
++	//		FINEST("The client has public endpoint: %s:%" PRIu16 ,
+ 	//				STR(ipAddress),
+ 	//				ENTOHS(_pOutboundAddress->sin_port));
+ 	//	} else {
+-	//		FINEST("The client is behind firewall: %s:%"PRIu16" -> %s:%"PRIu16,
++	//		FINEST("The client is behind firewall: %s:%" PRIu16 " -> %s:%" PRIu16 ,
+ 	//				STR(ipAddress),
+ 	//				ENTOHS(_pOutboundAddress->sin_port),
+ 	//				STR(ipAddress),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/rtspprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/rtspprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/rtspprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/rtspprotocol.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -190,7 +190,7 @@ bool RTSPProtocol::OpenHTTPTunnel() {
+ 		FATAL("URI not found");
+ 		return false;
+ 	}
+-	_httpTunnelHostPort = format("%s:%"PRIu16, STR(params["uri"]["host"]), (uint16_t) params["uri"]["port"]);
++	_httpTunnelHostPort = format("%s:%" PRIu16 , STR(params["uri"]["host"]), (uint16_t) params["uri"]["port"]);
+ 	_httpTunnelUri = format("http://%s%s",
+ 			STR(_httpTunnelHostPort),
+ 			STR(params["uri"]["fullDocumentPathWithParameters"]));
+@@ -377,7 +377,7 @@ bool RTSPProtocol::SendRequestMessage()
+ 			FATAL("Maximum number of requests reached");
+ 			return false;
+ 		}
+-		_requestHeaders[RTSP_HEADERS][RTSP_HEADERS_CSEQ] = format("%"PRIu32, ++_requestSequence);
++		_requestHeaders[RTSP_HEADERS][RTSP_HEADERS_CSEQ] = format("%" PRIu32 , ++_requestSequence);
+ 
+ 		//3. Put authentication if necessary
+ 		Variant &auth = _authentication["rtsp"];
+@@ -556,7 +556,7 @@ void RTSPProtocol::CloseInboundConnectiv
+ bool RTSPProtocol::SendRaw(uint8_t *pBuffer, uint32_t length, bool allowDrop) {
+ 	if ((allowDrop)&&(length > 0)) {
+ 		if (GETAVAILABLEBYTESCOUNT(_outputBuffer) > _maxBufferSize) {
+-			//			WARN("%"PRIu32" bytes dropped on connection %s. Max: %"PRIu32"; Current: %"PRIu32,
++			//			WARN("%" PRIu32 " bytes dropped on connection %s. Max: %" PRIu32 "; Current: %" PRIu32 ,
+ 			//					length, STR(*this), _maxBufferSize, GETAVAILABLEBYTESCOUNT(_outputBuffer));
+ 			return true;
+ 		}
+@@ -569,7 +569,7 @@ bool RTSPProtocol::SendRaw(MSGHDR *pMess
+ 		bool isAudio, bool isData, bool allowDrop) {
+ 	if ((allowDrop)&&(length > 0)) {
+ 		if (GETAVAILABLEBYTESCOUNT(_outputBuffer) > _maxBufferSize) {
+-			//			WARN("%"PRIu32" bytes dropped on connection %s. Max: %"PRIu32"; Current: %"PRIu32,
++			//			WARN("%" PRIu32 " bytes dropped on connection %s. Max: %" PRIu32 "; Current: %" PRIu32 ,
+ 			//					length, STR(*this), _maxBufferSize, GETAVAILABLEBYTESCOUNT(_outputBuffer));
+ 			return true;
+ 		}
+@@ -652,7 +652,7 @@ bool RTSPProtocol::SendMessage(string &f
+ 
+ 	//2. Add the content length if required
+ 	if (content.size() > 0) {
+-		headers[RTSP_HEADERS][RTSP_HEADERS_CONTENT_LENGTH] = format("%"PRIz"u", content.size());
++		headers[RTSP_HEADERS][RTSP_HEADERS_CONTENT_LENGTH] = format("%" PRIz "u", content.size());
+ 	}
+ 
+ 	//3. Add the session id if necessary
+@@ -727,7 +727,7 @@ bool RTSPProtocol::SendMessage(string &f
+ 
+ 			if (!TCPConnector<RTSPProtocol>::Connect(ip, port, chain,
+ 					customParameters)) {
+-				FATAL("Unable to connect to %s:%"PRIu16, STR(ip), port);
++				FATAL("Unable to connect to %s:%" PRIu16 , STR(ip), port);
+ 				return false;
+ 			}
+ 
+@@ -1009,7 +1009,7 @@ bool RTSPProtocol::HandleRTSPMessage(IOB
+ 		buffer.Ignore(chunkLength);
+ 		if (!((bool)_inboundHeaders["isHttp"])) {
+ 			if (_inboundContent.size() < _contentLength) {
+-				FINEST("Not enough data. Wanted: %u; got: %"PRIz"u", _contentLength, _inboundContent.size());
++				FINEST("Not enough data. Wanted: %u; got: %" PRIz "u", _contentLength, _inboundContent.size());
+ 				return true;
+ 			}
+ 		}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/sdp.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/sdp.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/sdp.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/sdp.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -257,10 +257,10 @@ bool SDP::ParseTransportLinePart(string
+ 				FATAL("Invalid transport line: %s", STR(raw));
+ 				return false;
+ 			}
+-			all = format("%"PRIu16"-%"PRIu16, data, rtcp);
++			all = format("%" PRIu16 "-%" PRIu16 , data, rtcp);
+ 		} else {
+ 			data = (uint16_t) atoi(STR(parts[0]));
+-			all = format("%"PRIu16, data);
++			all = format("%" PRIu16 , data);
+ 			rtcp = 0;
+ 		}
+ 		if (all != raw) {
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/streaming/innetrtpstream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/streaming/innetrtpstream.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/streaming/innetrtpstream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/streaming/innetrtpstream.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -46,7 +46,7 @@ InNetRTPStream::InNetRTPStream(BaseProto
+ 		_hasAudio = (bool)(pInfo != NULL);
+ 		if (pInfo != NULL) {
+ 			if (sdpSampleRate != pInfo->_samplingRate) {
+-				WARN("Audio sample rate advertised inside SDP is different from the actual value compued from the codec setup bytes. SDP: %"PRIu32"; codec setup bytes: %"PRIu32". Using the value from SDP",
++				WARN("Audio sample rate advertised inside SDP is different from the actual value compued from the codec setup bytes. SDP: %" PRIu32 "; codec setup bytes: %" PRIu32 ". Using the value from SDP",
+ 						sdpSampleRate, pInfo->_samplingRate);
+ 				_audioSampleRate = sdpSampleRate;
+ 			} else {
+@@ -174,7 +174,7 @@ bool InNetRTPStream::FeedVideoData(uint8
+ 		_videoSequence = GET_RTP_SEQ(rtpHeader);
+ 	} else {
+ 		if ((uint16_t) (_videoSequence + 1) != (uint16_t) GET_RTP_SEQ(rtpHeader)) {
+-			WARN("Missing video packet. Wanted: %"PRIu16"; got: %"PRIu16" on stream: %s",
++			WARN("Missing video packet. Wanted: %" PRIu16 "; got: %" PRIu16 " on stream: %s",
+ 					(uint16_t) (_videoSequence + 1),
+ 					(uint16_t) GET_RTP_SEQ(rtpHeader),
+ 					STR(GetName()));
+@@ -194,7 +194,7 @@ bool InNetRTPStream::FeedVideoData(uint8
+ 	uint8_t naluType = NALU_TYPE(pData[0]);
+ 	if (naluType <= 23) {
+ 		//3. Standard NALU
+-		//FINEST("V: %08"PRIx32, rtpHeader._timestamp);
++		//FINEST("V: %08" PRIx32 , rtpHeader._timestamp);
+ 		_stats.video.packetsCount++;
+ 		_stats.video.bytesCount += dataLength;
+ 		_currentNalu.IgnoreAll();
+@@ -213,7 +213,7 @@ bool InNetRTPStream::FeedVideoData(uint8
+ 			//middle NAL
+ 			_currentNalu.ReadFromBuffer(pData + 2, dataLength - 2);
+ 			if (((pData[1] >> 6)&0x01) == 1) {
+-				//FINEST("V: %08"PRIx32, rtpHeader._timestamp);
++				//FINEST("V: %08" PRIx32 , rtpHeader._timestamp);
+ 				_stats.video.packetsCount++;
+ 				_stats.video.bytesCount += GETAVAILABLEBYTESCOUNT(_currentNalu);
+ 				if (!InternalFeedData(GETIBPOINTER(_currentNalu),
+@@ -289,7 +289,7 @@ bool InNetRTPStream::FeedAudioDataAU(uin
+ 		_audioSequence = GET_RTP_SEQ(rtpHeader);
+ 	} else {
+ 		if ((uint16_t) (_audioSequence + 1) != (uint16_t) GET_RTP_SEQ(rtpHeader)) {
+-			WARN("Missing audio packet. Wanted: %"PRIu16"; got: %"PRIu16" on stream: %s",
++			WARN("Missing audio packet. Wanted: %" PRIu16 "; got: %" PRIu16 " on stream: %s",
+ 					(uint16_t) (_audioSequence + 1),
+ 					(uint16_t) GET_RTP_SEQ(rtpHeader),
+ 					STR(GetName()));
+@@ -305,7 +305,7 @@ bool InNetRTPStream::FeedAudioDataAU(uin
+ 	//1. Compute chunks count
+ 	uint16_t chunksCount = ENTOHSP(pData);
+ 	if ((chunksCount % 16) != 0) {
+-		FATAL("Invalid AU headers length: %"PRIx16, chunksCount);
++		FATAL("Invalid AU headers length: %" PRIx16 , chunksCount);
+ 		return false;
+ 	}
+ 	chunksCount = chunksCount / 16;
+@@ -323,7 +323,7 @@ bool InNetRTPStream::FeedAudioDataAU(uin
+ 		}
+ 		ts = (double) (rtpTs + i * 1024) / _audioSampleRate * 1000.00;
+ 		if ((cursor + chunkSize) > dataLength) {
+-			FATAL("Unable to feed data: cursor: %"PRIu32"; chunkSize: %"PRIu16"; dataLength: %"PRIu32"; chunksCount: %"PRIu16,
++			FATAL("Unable to feed data: cursor: %" PRIu32 "; chunkSize: %" PRIu16 "; dataLength: %" PRIu32 "; chunksCount: %" PRIu16 ,
+ 					cursor, chunkSize, dataLength, chunksCount);
+ 			return false;
+ 		}
+@@ -378,7 +378,7 @@ bool InNetRTPStream::FeedAudioDataLATM(u
+ 			return false;
+ 		}
+ 		cursor += currentLength;
+-		//      FINEST("currentLength: %"PRIu32"; dataLength: %"PRIu32"; ts: %.2f",
++		//      FINEST("currentLength: %" PRIu32 "; dataLength: %" PRIu32 "; ts: %.2f",
+ 		//              currentLength, dataLength, ts / 1000.0);
+ 		index++;
+ 	}
+@@ -442,7 +442,7 @@ bool InNetRTPStream::InternalFeedData(ui
+ 	switch (_rtcpPresence) {
+ 		case RTCP_PRESENCE_UNKNOWN:
+ 		{
+-			DEBUG_RTCP_PRESENCE("RTCP_PRESENCE_UNKNOWN: %"PRIz"u", (time(NULL) - _rtcpDetectionStart));
++			DEBUG_RTCP_PRESENCE("RTCP_PRESENCE_UNKNOWN: %" PRIz "u", (time(NULL) - _rtcpDetectionStart));
+ 			if (_rtcpDetectionInterval == 0) {
+ 				WARN("RTCP disabled on stream %s. A/V drifting may occur over long periods of time",
+ 						STR(*this));
+@@ -503,7 +503,7 @@ bool InNetRTPStream::InternalFeedData(ui
+ 		}
+ 		default:
+ 		{
+-			ASSERT("Invalid _rtcpPresence: %"PRIu8, _rtcpPresence);
++			ASSERT("Invalid _rtcpPresence: %" PRIu8 , _rtcpPresence);
+ 			return false;
+ 		}
+ 	}
+@@ -551,7 +551,7 @@ bool InNetRTPStream::InternalFeedData(ui
+ 	//	}
+ 
+ 	if (lastDts > dts) {
+-		WARN("Back time on %s. ATS: %.08f LTS: %.08f; D: %.8f; isAudio: %d; _dtsCacheSize: %"PRIz"u",
++		WARN("Back time on %s. ATS: %.08f LTS: %.08f; D: %.8f; isAudio: %d; _dtsCacheSize: %" PRIz "u",
+ 				STR(GetName()),
+ 				dts,
+ 				lastDts,
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/rtp/streaming/outnetrtpudph264stream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/streaming/outnetrtpudph264stream.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/rtp/streaming/outnetrtpudph264stream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/rtp/streaming/outnetrtpudph264stream.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -272,7 +272,7 @@ bool OutNetRTPUDPH264Stream::PushAudioDa
+ 	uint32_t dataLength = GETAVAILABLEBYTESCOUNT(buffer);
+ 	uint8_t *pData = GETIBPOINTER(buffer);
+ #ifdef MULTIPLE_AUS
+-	//	FINEST("_auCount: %"PRIu32"; max: %"PRIu32"; have: %"PRIu32"; total: %"PRIu32,
++	//	FINEST("_auCount: %" PRIu32 "; max: %" PRIu32 "; have: %" PRIu32 "; total: %" PRIu32 ,
+ 	//			_auCount,
+ 	//			MAX_AUS_COUNT,
+ 	//			12 //RTP header
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/ssl/basesslprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ssl/basesslprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/ssl/basesslprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ssl/basesslprotocol.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -223,8 +223,8 @@ string BaseSSLProtocol::DumpBIO(BIO *pBI
+ 	formatString += "next_bio: %p\n";
+ 	formatString += "prev_bio: %p\n";
+ 	formatString += "references: %d\n";
+-	formatString += "num_read: %"PRId64"\n";
+-	formatString += "num_write: %"PRId64;
++	formatString += "num_read: %" PRId64 "\n";
++	formatString += "num_write: %" PRId64 ;
+ 	return format(STR(formatString),
+ 			pBIO->method,
+ 			pBIO->callback,
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/ssl/inboundsslprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ssl/inboundsslprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/ssl/inboundsslprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ssl/inboundsslprotocol.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -88,7 +88,7 @@ bool InboundSSLProtocol::InitGlobalConte
+ 			cipherSuite = (string) parameters[CONF_SSL_CIPHERSUITE];
+ 		trim(cipherSuite);
+ 		if (cipherSuite != "") {
+-			INFO("Apply cipher suite `%s` on %s %s:%"PRIu16,
++			INFO("Apply cipher suite `%s` on %s %s:%" PRIu16 ,
+ 					STR(cipherSuite),
+ 					STR(parameters[CONF_PROTOCOL]),
+ 					STR(parameters[CONF_IP]),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/protocols/ts/inboundtsprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ts/inboundtsprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/protocols/ts/inboundtsprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/protocols/ts/inboundtsprotocol.cpp	2018-12-03 00:36:44.073384113 +1100
+@@ -161,7 +161,7 @@ void InboundTSProtocol::SignalPMT(TSPack
+ 	if (GetCustomParameters().HasKeyChain(V_STRING, true, 1, "localStreamName"))
+ 		streamName = (string) GetCustomParameters()["localStreamName"];
+ 	else
+-		streamName = format("ts_%"PRIu32"_%s", GetId(), STR(generateRandomString(4)));
++		streamName = format("ts_%" PRIu32 "_%s", GetId(), STR(generateRandomString(4)));
+ 
+ 	if (!GetApplication()->StreamNameAvailable(streamName, this)) {
+ 		FATAL("Stream name %s already taken", STR(streamName));
+diff -rupEbBN crtmpserver-org/sources/thelib/src/streaming/baseinfilestream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/baseinfilestream.cpp
+--- crtmpserver-org/sources/thelib/src/streaming/baseinfilestream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/baseinfilestream.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -119,17 +119,17 @@ BaseInFileStream::~BaseInFileStream() {
+ 
+ void BaseInFileStream::SetClientSideBuffer(uint32_t value) {
+ 	if (value == 0) {
+-		//WARN("Invalid client side buffer value: %"PRIu32, value);
++		//WARN("Invalid client side buffer value: %" PRIu32 , value);
+ 		return;
+ 	}
+ 	if (value > 120) {
+ 		value = 120;
+ 	}
+ 	if (_clientSideBufferLength > value) {
+-		//WARN("Client side buffer must be bigger than %"PRIu32, _clientSideBufferLength);
++		//WARN("Client side buffer must be bigger than %" PRIu32 , _clientSideBufferLength);
+ 		return;
+ 	}
+-	//	FINEST("Client side buffer modified: %"PRIu32" -> %"PRIu32,
++	//	FINEST("Client side buffer modified: %" PRIu32 " -> %" PRIu32 ,
+ 	//			_clientSideBufferLength, value);
+ 	_clientSideBufferLength = value;
+ }
+@@ -211,7 +211,7 @@ bool BaseInFileStream::Initialize(Metada
+ 	//5. Compute the optimal window size by reading the biggest frame size
+ 	//from the seek file.
+ 	if (!_pSeekFile->SeekTo(_pSeekFile->Size() - 8)) {
+-		FATAL("Unable to seek to %"PRIu64" position", _pSeekFile->Cursor() - 8);
++		FATAL("Unable to seek to %" PRIu64 " position", _pSeekFile->Cursor() - 8);
+ 		return false;
+ 	}
+ 	uint64_t maxFrameSize = 0;
+@@ -237,7 +237,7 @@ bool BaseInFileStream::Initialize(Metada
+ 
+ 	//4. Read the frames count from the file
+ 	if (!_pSeekFile->SeekTo(_seekBaseOffset)) {
+-		FATAL("Unable to seek to _seekBaseOffset: %"PRIu64, _seekBaseOffset);
++		FATAL("Unable to seek to _seekBaseOffset: %" PRIu64 , _seekBaseOffset);
+ 		return false;
+ 	}
+ 	if (!_pSeekFile->ReadUI32(&_totalFrames)) {
+@@ -260,7 +260,7 @@ bool BaseInFileStream::Initialize(Metada
+ 
+ bool BaseInFileStream::InitializeTimer(int32_t clientSideBufferLength, TimerType timerType,
+ 		uint32_t granularity) {
+-	//	FINEST("clientSideBufferLength: %"PRId32"; timerType: %s; granularity: %"PRIu32,
++	//	FINEST("clientSideBufferLength: %" PRId32 "; timerType: %s; granularity: %" PRIu32 ,
+ 	//			clientSideBufferLength,
+ 	//			(timerType == TIMER_TYPE_HIGH_GRANULARITY) ?
+ 	//			"highGranularity"
+@@ -791,7 +791,7 @@ bool BaseInFileStream::FeedTS(bool &data
+ 		}
+ 
+ 		_tsChunkSize = _currentFrame.start - _tsChunkSize;
+-		//FINEST("_tsChukSize: %"PRIu64, _tsChunkSize);
++		//FINEST("_tsChukSize: %" PRIu64 , _tsChunkSize);
+ 	}
+ 
+ 	if (!_pFile->SeekTo(_tsChunkStart)) {
+@@ -806,7 +806,7 @@ bool BaseInFileStream::FeedTS(bool &data
+ 
+ 	while (_tsChunkSize != 0) {
+ 		uint32_t size = (GETAVAILABLEBYTESCOUNT(_videoBuffer) > 7 * 188) ? 7 * 188 : GETAVAILABLEBYTESCOUNT(_videoBuffer);
+-		//FINEST("size: %"PRIu32, size);
++		//FINEST("size: %" PRIu32 , size);
+ 
+ 		_tsChunkSize -= size;
+ 		_tsChunkStart += size;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/streaming/baseoutstream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/baseoutstream.cpp
+--- crtmpserver-org/sources/thelib/src/streaming/baseoutstream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/baseoutstream.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -760,7 +760,7 @@ bool BaseOutStream::ProcessH264FromTS(ui
+ 	//6. make sure the packet doesn't grow too big
+ 	if (_genericProcessDataSetup._maxFrameSize != 0) {
+ 		if (GETAVAILABLEBYTESCOUNT(_videoFrame) >= _genericProcessDataSetup._maxFrameSize) {
+-			WARN("Frame bigger than %"PRIu32" bytes. Discard it",
++			WARN("Frame bigger than %" PRIu32 " bytes. Discard it",
+ 					_genericProcessDataSetup._maxFrameSize);
+ 			_videoFrame.IgnoreAll();
+ 			_isKeyFrame = false;
+diff -rupEbBN crtmpserver-org/sources/thelib/src/streaming/basestream.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/basestream.cpp
+--- crtmpserver-org/sources/thelib/src/streaming/basestream.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/basestream.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -50,12 +50,12 @@ BaseStream::~BaseStream() {
+ 
+ bool BaseStream::SetStreamsManager(StreamsManager *pStreamsManager) {
+ 	if (pStreamsManager == NULL) {
+-		FATAL("no streams manager provided for stream %s(%"PRIu32")",
++		FATAL("no streams manager provided for stream %s(%" PRIu32 ")",
+ 				STR(tagToString(_type)), _uniqueId);
+ 		return false;
+ 	}
+ 	if (_pStreamsManager != NULL) {
+-		FATAL("Stream %s(%"PRIu32") already registered to the streams manager",
++		FATAL("Stream %s(%" PRIu32 ") already registered to the streams manager",
+ 				STR(tagToString(_type)), _uniqueId);
+ 		return false;
+ 	}
+@@ -166,7 +166,7 @@ void BaseStream::EnqueueForDelete() {
+ }
+ 
+ BaseStream::operator string() {
+-	return format("%s(%"PRIu32") with name `%s` from protocol %s(%"PRIu32")",
++	return format("%s(%" PRIu32 ") with name `%s` from protocol %s(%" PRIu32 ")",
+ 			STR(tagToString(_type)),
+ 			_uniqueId,
+ 			STR(_name),
+diff -rupEbBN crtmpserver-org/sources/thelib/src/streaming/streamcapabilities.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamcapabilities.cpp
+--- crtmpserver-org/sources/thelib/src/streaming/streamcapabilities.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamcapabilities.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -511,7 +511,7 @@ void VideoCodecInfo::GetRTMPMetadata(Var
+ }
+ 
+ VideoCodecInfo::operator string() {
+-	return format("%s %"PRIu32"x%"PRIu32" %.2f fps",
++	return format("%s %" PRIu32 "x%" PRIu32 " %.2f fps",
+ 			STR(CodecInfo::operator string()),
+ 			_width,
+ 			_height,
+@@ -629,7 +629,7 @@ bool VideoCodecInfoH264::Deserialize(IOB
+ }
+ 
+ VideoCodecInfoH264::operator string() {
+-	return format("%s SPS/PPS: %"PRIu32"/%"PRIu32" L/P: %"PRIu8"/%"PRIu8,
++	return format("%s SPS/PPS: %" PRIu32 "/%" PRIu32 " L/P: %" PRIu8 "/%" PRIu8 ,
+ 			STR(VideoCodecInfo::operator string()),
+ 			_spsLength,
+ 			_ppsLength,
+@@ -844,7 +844,7 @@ bool VideoCodecInfoSorensonH263::Deseria
+ }
+ 
+ VideoCodecInfoSorensonH263::operator string() {
+-	return format("%s Headers: %"PRIu32,
++	return format("%s Headers: %" PRIu32 ,
+ 			STR(VideoCodecInfo::operator string()),
+ 			_length);
+ }
+@@ -883,19 +883,19 @@ bool VideoCodecInfoSorensonH263::Init(ui
+ 
+ 	uint32_t marker = ba.ReadBits<uint32_t > (17);
+ 	if (marker != 0x01) {
+-		FATAL("Invalid marker: %"PRIx32, marker);
++		FATAL("Invalid marker: %" PRIx32 , marker);
+ 		return false;
+ 	}
+ 
+ 	uint8_t format1 = ba.ReadBits<uint8_t > (5);
+ 	if ((format1) != 0 && (format1 != 1)) {
+-		FATAL("Invalid format1: %"PRIx8, format1);
++		FATAL("Invalid format1: %" PRIx8 , format1);
+ 		return false;
+ 	}
+ 
+ 	/*uint8_t pictureNumber =*/ ba.ReadBits<uint8_t > (8);
+ 	//	if (pictureNumber != 0) {
+-	//		WARN("This is not the first picture from a Sorenson H.263 stream: %"PRIx8, pictureNumber);
++	//		WARN("This is not the first picture from a Sorenson H.263 stream: %" PRIx8 , pictureNumber);
+ 	//	}
+ 
+ 	uint8_t format2 = ba.ReadBits<uint8_t > (3);
+@@ -939,7 +939,7 @@ bool VideoCodecInfoSorensonH263::Init(ui
+ 			break;
+ 		default:
+ 		{
+-			FATAL("Invalid format2: %"PRIx8, format2);
++			FATAL("Invalid format2: %" PRIx8 , format2);
+ 			return false;
+ 		}
+ 	}
+@@ -1008,7 +1008,7 @@ bool VideoCodecInfoVP6::Deserialize(IOBu
+ }
+ 
+ VideoCodecInfoVP6::operator string() {
+-	return format("%s Headers: %"PRIu32,
++	return format("%s Headers: %" PRIu32 ,
+ 			STR(VideoCodecInfo::operator string()),
+ 			_length);
+ }
+@@ -1098,7 +1098,7 @@ void AudioCodecInfo::GetRTMPMetadata(Var
+ }
+ 
+ AudioCodecInfo::operator string() {
+-	return format("%s %"PRIu8" channels, %"PRIu8" bits/sample",
++	return format("%s %" PRIu8 " channels, %" PRIu8 " bits/sample",
+ 			STR(CodecInfo::operator string()),
+ 			_channelsCount,
+ 			_bitsPerSample);
+@@ -1214,7 +1214,7 @@ bool AudioCodecInfoAAC::Deserialize(IOBu
+ }
+ 
+ AudioCodecInfoAAC::operator string() {
+-	return format("%s codec length: %"PRIu8,
++	return format("%s codec length: %" PRIu8 ,
+ 			STR(AudioCodecInfo::operator string()),
+ 			_codecBytesLength);
+ }
+@@ -1224,7 +1224,7 @@ bool AudioCodecInfoAAC::Init(uint8_t *pC
+ 	//http://wiki.multimedia.cx/index.php?title=MP4A#Audio_Specific_Config
+ 
+ 	if (codecBytesLength < 2) {
+-		FATAL("Invalid length: %"PRIu8, codecBytesLength);
++		FATAL("Invalid length: %" PRIu8 , codecBytesLength);
+ 		return false;
+ 	}
+ 
+@@ -1280,7 +1280,7 @@ bool AudioCodecInfoAAC::Init(uint8_t *pC
+ 		case 13:
+ 		case 14: //we only have 13 values in the table.
+ 		{
+-			FATAL("Invalid sample rate: %"PRIu8, _sampleRateIndex);
++			FATAL("Invalid sample rate: %" PRIu8 , _sampleRateIndex);
+ 			return false;
+ 		}
+ 		case 15: //this is a special value telling us the freq directly
+@@ -1311,7 +1311,7 @@ bool AudioCodecInfoAAC::Init(uint8_t *pC
+ 	}
+ 	_channelsCount = ba.ReadBits<uint8_t > (4);
+ 	if ((_channelsCount == 0) || (_channelsCount >= 8)) {
+-		FATAL("Invalid _channelConfigurationIndex: %"PRIu8, _channelsCount);
++		FATAL("Invalid _channelConfigurationIndex: %" PRIu8 , _channelsCount);
+ 		return false;
+ 	}
+ 
+@@ -1594,7 +1594,7 @@ bool StreamCapabilities::Deserialize(IOB
+ 				case CODEC_VIDEO_SCREENVIDEO2:
+ 				default:
+ 				{
+-					FATAL("Invalid codec type: %016"PRIx64, type);
++					FATAL("Invalid codec type: %016" PRIx64 , type);
+ 					return false;
+ 				}
+ 			}
+@@ -1666,7 +1666,7 @@ bool StreamCapabilities::Deserialize(IOB
+ 				case CODEC_AUDIO_SPEEX:
+ 				default:
+ 				{
+-					FATAL("Invalid codec type: %016"PRIx64, type);
++					FATAL("Invalid codec type: %016" PRIx64 , type);
+ 					return false;
+ 				}
+ 			}
+diff -rupEbBN crtmpserver-org/sources/thelib/src/streaming/streamsmanager.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamsmanager.cpp
+--- crtmpserver-org/sources/thelib/src/streaming/streamsmanager.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/streaming/streamsmanager.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -104,7 +104,7 @@ map<uint32_t, BaseOutStream *> StreamsMa
+ 	shortSubscribers = FindByTypeByName(ST_OUT, shortName, true, false);
+ 	longSubscribers = FindByTypeByName(ST_OUT, streamName, true, false);
+ 
+-	//	FINEST("short count: %"PRIz"u; long count: %"PRIz"u",
++	//	FINEST("short count: %" PRIz "u; long count: %" PRIz "u",
+ 	//			shortSubscribers.size(), longSubscribers.size());
+ 
+ 	//3. merge them
+diff -rupEbBN crtmpserver-org/sources/thelib/src/utils/udpsenderprotocol.cpp crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/utils/udpsenderprotocol.cpp
+--- crtmpserver-org/sources/thelib/src/utils/udpsenderprotocol.cpp	2018-12-02 23:43:27.605384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/sources/thelib/src/utils/udpsenderprotocol.cpp	2018-12-03 00:36:44.077384113 +1100
+@@ -71,7 +71,7 @@ UDPSenderProtocol *UDPSenderProtocol::Ge
+ 	_destAddress.sin_addr.s_addr = inet_addr(STR(targetIp));
+ 	_destAddress.sin_port = EHTONS(targetPort);
+ 	if (_destAddress.sin_addr.s_addr == INADDR_NONE) {
+-		FATAL("Unable to compute destination address %s:%"PRIu16, STR(targetIp),
++		FATAL("Unable to compute destination address %s:%" PRIu16 , STR(targetIp),
+ 				targetPort);
+ 		pResult->EnqueueForDelete();
+ 		return NULL;

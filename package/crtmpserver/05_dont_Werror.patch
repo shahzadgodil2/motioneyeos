@@ -1,0 +1,24 @@
+From: Reinhard Tartler <siretart@tauware.de>
+Subject: Don't set -Werror
+Bug-Debian: http://bugs.debian.org/625316
+
+This package builds with -Werror, and GCC 4.6 triggers new warnings
+which will make the package fail to build.  Currently a Debian patch
+just passes
+    -Wno-error=unused-but-set-variable and
+    -Wno-error=unused-but-set-parameter
+to avoid build failures, but this patch will be reverted with the
+GCC 4.6.1 release, and the severity of the report will be raised.
+
+
+--- a/builders/cmake/CMakeLists.txt
++++ b/builders/cmake/CMakeLists.txt
+@@ -123,7 +123,7 @@ ADD_DEFINITIONS(-DHAS_LUA)
+ #ADD_DEFINITIONS(-DUSE_MEM_POOL)
+ #ADD_DEFINITIONS(-DDEBUG_MEM_POOL)
+ 
+-SET(GENERIC_FLAGS "-Wall -Werror")
++SET(GENERIC_FLAGS "-Wall")
+ 
+ #add 64 bit support for 32 but platforms
+ ADD_DEFINITIONS(-D__USE_FILE_OFFSET64)

@@ -1,0 +1,9 @@
+diff -rupEbBN crtmpserver-tmp/builders/cmake/CMakeLists.txt crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/builders/cmake/CMakeLists.txt
+--- crtmpserver-tmp/builders/cmake/CMakeLists.txt	2018-12-03 10:58:27.741384113 +1100
++++ crtmpserver-b866fffca37c3b967a8878499cd2b91aa2587f34/builders/cmake/CMakeLists.txt	2018-12-03 10:58:35.992306603 +1100
+@@ -230,4 +230,4 @@ ADD_SUBDIRECTORY(common common)
+ ADD_SUBDIRECTORY(thelib thelib)
+ ADD_SUBDIRECTORY(applications applications)
+ ADD_SUBDIRECTORY(crtmpserver crtmpserver)
+-ADD_SUBDIRECTORY(tests)
++#ADD_SUBDIRECTORY(tests)
