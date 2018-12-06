@@ -14,6 +14,16 @@ CRTMPSERVER_SUBDIR = builders/cmake
 CRTMPSERVER_MAKE=$(MAKE1)
 
 define CRTMPSERVER_INSTALL_TARGET_CMDS
+	mkdir -p $(TARGET_DIR)/usr/sbin
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/admin
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector/ssl
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/flvplayback
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/samplefactory
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/vptests
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/proxypublish
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/stresstest
+	mkdir -p $(TARGET_DIR)/etc/crtmpserver
 	$(INSTALL) -D -m 0755 $(@D)/builders/cmake/crtmpserver/crtmpserver $(TARGET_DIR)/usr/sbin
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/admin/libadmin.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/admin
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/appselector/libappselector.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector
@@ -24,7 +34,7 @@ define CRTMPSERVER_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/vptests/libvptests.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/vptests
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/proxypublish/libproxypublish.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/proxypublish
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/stresstest/libstresstest.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/stresstest
-	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/crtmpserver/crtmpserver.lua $(TARGET_DIR)/usr/crtmpserver
+	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/crtmpserver/crtmpserver.lua $(TARGET_DIR)/etc/crtmpserver
 	$(INSTALL) -D -m 0700 $(@D)/configs/flvplayback.lua $(TARGET_DIR)/etc/crtmpserver
 endef
 
