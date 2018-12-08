@@ -1,0 +1,15 @@
+diff -rupEbBN live555-2018.10.17.org/proxyServer/live555ProxyServer.cpp live555-2018.10.17/proxyServer/live555ProxyServer.cpp
+--- live555-2018.10.17.org/proxyServer/live555ProxyServer.cpp	2018-12-07 18:12:10.554966465 +1100
++++ live555-2018.10.17/proxyServer/live555ProxyServer.cpp	2018-12-07 18:12:53.039473456 +1100
+@@ -214,9 +214,9 @@ int main(int argc, char** argv) {
+     char const* proxiedStreamURL = argv[i];
+     char streamName[30];
+     if (argc == 2) {
+-      sprintf(streamName, "%s", "proxyStream"); // there's just one stream; give it this name
++      sprintf(streamName, "%s", "stream"); // there's just one stream; give it this name
+     } else {
+-      sprintf(streamName, "proxyStream-%d", i); // there's more than one stream; distinguish them by name
++      sprintf(streamName, "stream-%d", i); // there's more than one stream; distinguish them by name
+     }
+     ServerMediaSession* sms
+       = ProxyServerMediaSession::createNew(*env, rtspServer,

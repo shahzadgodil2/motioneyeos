@@ -1,0 +1,94 @@
+diff -rupEbBN live555-2018.10.17.org/proxyServer/live555ProxyServer.cpp live555-2018.10.17/proxyServer/live555ProxyServer.cpp
+--- live555-2018.10.17.org/proxyServer/live555ProxyServer.cpp	2018-12-08 23:04:11.150966465 +1100
++++ live555-2018.10.17/proxyServer/live555ProxyServer.cpp	2018-12-09 00:27:41.259713362 +1100
+@@ -20,6 +20,14 @@ along with this library; if not, write t
+ #include "liveMedia.hh"
+ #include "BasicUsageEnvironment.hh"
+ 
++// To make the second and subsequent client for each stream reuse the same
++// input stream as the first client (rather than playing the file from the
++// start for each client), change the following "False" to "True":
++Boolean reuseFirstSource = True;
++
++static void announceStream(RTSPServer* rtspServer, ServerMediaSession* sms,
++			   char const* streamName, char const* inputFileName);
++
+ char const* progName;
+ UsageEnvironment* env;
+ UserAuthenticationDatabase* authDB = NULL;
+@@ -33,6 +41,7 @@ portNumBits rtspServerPortNum = 554;
+ char* username = NULL;
+ char* password = NULL;
+ Boolean proxyREGISTERRequests = False;
++Boolean proxyStdin = False;
+ char* usernameForREGISTER = NULL;
+ char* passwordForREGISTER = NULL;
+ 
+@@ -51,6 +60,7 @@ void usage() {
+        << " [-p <rtspServer-port>]"
+        << " [-u <username> <password>]"
+        << " [-R] [-U <username-for-REGISTER> <password-for-REGISTER>]"
++       << " [-i]"
+        << " <rtsp-url-1> ... <rtsp-url-n>\n";
+   exit(1);
+ }
+@@ -151,6 +161,11 @@ int main(int argc, char** argv) {
+       break;
+     }
+ 
++    case 'i': { // relay stream from stdin too
++      proxyStdin = True;
++      break;
++    }
++
+     default: {
+       usage();
+       break;
+@@ -159,7 +174,7 @@ int main(int argc, char** argv) {
+ 
+     ++argv; --argc;
+   }
+-  if (argc < 2 && !proxyREGISTERRequests) usage(); // there must be at least one "rtsp://" URL at the end 
++  if (argc < 2 && !proxyREGISTERRequests && !proxyStdin) usage(); // there must be at least one "rtsp://" URL at the end
+   // Make sure that the remaining arguments appear to be "rtsp://" URLs:
+   int i;
+   for (i = 1; i < argc; ++i) {
+@@ -209,6 +224,24 @@ int main(int argc, char** argv) {
+     exit(1);
+   }
+ 
++  if (proxyStdin) {
++    char const* descriptionString = "Session streamed from stdin";
++    char const* streamName = "h264";
++    char const* inputFileName = "stdin";
++
++    ServerMediaSession* sms = ServerMediaSession::createNew(*env,
++							    streamName,
++							    streamName,
++							    descriptionString);
++
++    sms->addSubsession( H264VideoFileServerMediaSubsession ::createNew(*env,
++								       inputFileName,
++								       reuseFirstSource));
++
++    rtspServer->addServerMediaSession(sms);
++
++    announceStream(rtspServer, sms, streamName, inputFileName);	// not needed just for better diagnostic
++  }
+   // Create a proxy for each "rtsp://" URL specified on the command line:
+   for (i = 1; i < argc; ++i) {
+     char const* proxiedStreamURL = argv[i];
+@@ -249,3 +282,13 @@ int main(int argc, char** argv) {
+ 
+   return 0; // only to prevent compiler warning
+ }
++
++static void announceStream(RTSPServer* rtspServer, ServerMediaSession* sms,
++			   char const* streamName, char const* inputFileName) {
++  char* url = rtspServer->rtspURL(sms);
++  UsageEnvironment& env = rtspServer->envir();
++  env << "\n\"" << streamName << "\" stream, from the file \""
++      << inputFileName << "\"\n";
++  env << "Play this stream using the URL \"" << url << "\"\n";
++  delete[] url;
++}
