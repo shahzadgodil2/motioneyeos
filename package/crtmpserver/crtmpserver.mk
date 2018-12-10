@@ -15,6 +15,7 @@ CRTMPSERVER_MAKE=$(MAKE1)
 
 define CRTMPSERVER_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/sbin
+	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver
 	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/admin
 	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector
 	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector/ssl
@@ -25,6 +26,8 @@ define CRTMPSERVER_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/usr/lib/crtmpserver/applications/stresstest
 	mkdir -p $(TARGET_DIR)/etc/crtmpserver
 	$(INSTALL) -D -m 0755 $(@D)/builders/cmake/crtmpserver/crtmpserver $(TARGET_DIR)/usr/sbin
+	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/thelib/libthelib.so $(TARGET_DIR)/usr/lib/crtmpserver
+	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/common/libcommon.so $(TARGET_DIR)/usr/lib/crtmpserver
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/admin/libadmin.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/admin
 	$(INSTALL) -D -m 0700 $(@D)/builders/cmake/applications/appselector/libappselector.so $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector
 	$(INSTALL) -D -m 0600 $(@D)/builders/cmake/applications/appselector/server.crt $(TARGET_DIR)/usr/lib/crtmpserver/applications/appselector/ssl
